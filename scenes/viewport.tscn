@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://c463v7vmjarhn"]
+
+[ext_resource type="PackedScene" uid="uid://bdf8lrfvpdl88" path="res://scenes/white_box.tscn" id="1_b48us"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+custom_minimum_size = Vector2(640, 360)
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(3, 3)
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+size = Vector2i(640, 360)
+
+[node name="Node2D" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_b48us")]
+position = Vector2(58, 8)

@@ -36,7 +36,8 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_iyf3d")
 
 [sub_resource type="Gradient" id="Gradient_4mfkd"]
-offsets = PackedFloat32Array(0, 0.25431, 0.577586, 0.75431)
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.168103, 0.349138, 0.655172, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.840237, 0.840237, 0.840237, 1, 0.0400113, 0.0400113, 0.0400113, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_fqctn"]
@@ -186,12 +187,12 @@ script = ExtResource("2_5f6py")
 [node name="PointLight2D" type="PointLight2D" parent="CharacterBody2D"]
 position = Vector2(1, 0)
 shadow_enabled = true
-shadow_filter_smooth = 23.0
+shadow_filter = 1
+shadow_filter_smooth = 2.0
 texture = SubResource("GradientTexture2D_fqctn")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-position = Vector2(1, 0)
-zoom = Vector2(4, 4)
+position = Vector2(1, 1)
 limit_left = -250
 limit_top = -250
 limit_right = 750
@@ -225,7 +226,8 @@ position = Vector2(431, -29)
 color = Color(0.12549, 0.12549, 0.12549, 1)
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(440, -67)
+position = Vector2(441, -60)
 shadow_enabled = true
-shadow_filter_smooth = 23.0
+shadow_filter = 1
+shadow_filter_smooth = 2.0
 texture = SubResource("GradientTexture2D_fqctn")
