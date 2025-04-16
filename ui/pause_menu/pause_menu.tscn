@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://b854ho4dn6cdm"]
+
+[ext_resource type="Script" uid="uid://bxw81xi1txuag" path="res://ui/pause_menu/pause_menu.gd" id="1_mnjdh"]
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mnjdh")
+
+[node name="Quit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 366.0
+offset_top = 537.0
+offset_right = 417.0
+offset_bottom = 594.0
+text = "Q"
+
+[node name="Label" type="Label" parent="Quit"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = -280.0
+offset_right = 144.0
+offset_bottom = -257.0
+theme_override_font_sizes/font_size = 50
+text = "Paused"
+
+[node name="Resume" type="Button" parent="."]
+layout_mode = 0
+offset_left = 455.0
+offset_top = 537.0
+offset_right = 663.0
+offset_bottom = 594.0
+text = "R"
+
+[node name="Settings" type="Button" parent="."]
+layout_mode = 0
+offset_left = 684.0
+offset_top = 537.0
+offset_right = 735.0
+offset_bottom = 594.0
+text = "S"
+
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
