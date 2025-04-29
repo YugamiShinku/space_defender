@@ -6,15 +6,13 @@ extends CharacterBody2D
 @export var movement_deceleration: float = 10.0
 
 
-@onready var sprite_2d = $AnimatedSprite2D 
+@onready var sprite_2d = $AnimatedSprite2D
 
 
 func get_movement_direction() -> Vector2:
-	var movement_direction := Vector2.ZERO
-	movement_direction.x = Input.get_axis("move_left", "move_right")
-	movement_direction.y = Input.get_axis("move_up", "move_down")
+	var movement_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	return movement_direction.normalized()	
-
+	
 
 func _physics_process(delta: float) -> void:
 	var movement_direction = get_movement_direction()

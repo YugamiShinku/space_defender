@@ -1,10 +1,14 @@
-[gd_scene load_steps=11 format=4 uid="uid://bdf8lrfvpdl88"]
+[gd_scene load_steps=15 format=4 uid="uid://bdf8lrfvpdl88"]
 
 [ext_resource type="TileSet" uid="uid://d2gtfu8hufh0j" path="res://assets/floot_tileset.tres" id="1_fqctn"]
 [ext_resource type="Texture2D" uid="uid://d4e67vioqjan8" path="res://assets/environment.png" id="1_tqrpp"]
 [ext_resource type="PackedScene" uid="uid://cwag33x4rk4mh" path="res://assets/player.tscn" id="3_5f6py"]
 [ext_resource type="PackedScene" uid="uid://bp0ocsulst6fr" path="res://assets/enemy.tscn" id="4_4mfkd"]
 [ext_resource type="Script" uid="uid://cs41wxl0u4rjr" path="res://scripts/navigation_region_2d_generator.gd" id="5_fqctn"]
+[ext_resource type="PackedScene" uid="uid://crq8j7te7os34" path="res://assets/gun.tscn" id="7_iyf3d"]
+[ext_resource type="Texture2D" uid="uid://ducolv6rwbs4w" path="res://assets/gun2.png" id="7_su6x1"]
+[ext_resource type="Texture2D" uid="uid://bbhto01k2173p" path="res://assets/gun3.png" id="8_8nb0e"]
+[ext_resource type="PackedScene" uid="uid://dhej8q5jfab5j" path="res://assets/bullet2.tscn" id="8_su6x1"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_4mfkd"]
 polygon = PackedVector2Array(-16, 24, 16, 24, 16, -4, 16, -24, -16, -24, -16, -4)
@@ -75,7 +79,23 @@ visible = false
 color = Color(0.188235, 0.188235, 0.188235, 1)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." node_paths=PackedStringArray("root_node")]
-position = Vector2(270, 14)
+position = Vector2(270, 8)
 navigation_polygon = SubResource("NavigationPolygon_4mfkd")
 script = ExtResource("5_fqctn")
 root_node = NodePath("../TileMap")
+
+[node name="Gun" parent="." instance=ExtResource("7_iyf3d")]
+position = Vector2(437, 15.5)
+
+[node name="Gun2" parent="." instance=ExtResource("7_iyf3d")]
+position = Vector2(438, -17.5)
+texture = ExtResource("7_su6x1")
+bullet = ExtResource("8_su6x1")
+fire_rate = 0.4
+damage = 25
+
+[node name="Gun3" parent="." instance=ExtResource("7_iyf3d")]
+position = Vector2(437, -0.5)
+texture = ExtResource("8_8nb0e")
+fire_rate = 0.1
+damage = 5

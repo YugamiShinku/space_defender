@@ -1,10 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://cwag33x4rk4mh"]
+[gd_scene load_steps=17 format=3 uid="uid://cwag33x4rk4mh"]
 
 [ext_resource type="Script" uid="uid://d4a01a7cbgxiu" path="res://scripts/player_movement.gd" id="1_3mip4"]
 [ext_resource type="Texture2D" uid="uid://vigl3dpj8e55" path="res://assets/player.png" id="2_insbl"]
+[ext_resource type="Script" uid="uid://dgji7k80x8k3b" path="res://scripts/player_equipment.gd" id="3_insbl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mfkd"]
-height = 22.0
+radius = 8.0
+height = 20.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iyf3d"]
 atlas = ExtResource("2_insbl")
@@ -117,6 +119,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3mip4"]
+radius = 50.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_insbl"]
+height = 46.0
+
 [node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_3mip4")
@@ -139,7 +147,7 @@ drag_bottom_margin = 0.05
 editor_draw_screen = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -10)
+position = Vector2(0, -9)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_4mfkd")
 
@@ -147,3 +155,26 @@ shape = SubResource("CapsuleShape2D_4mfkd")
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_4mfkd")
 animation = &"idle_front"
+
+[node name="Marker2D (Weapon)" type="Marker2D" parent="."]
+position = Vector2(0, -24)
+
+[node name="Area2D (Pickup)" type="Area2D" parent="." node_paths=PackedStringArray("weapon_position", "pickup_area")]
+visible = false
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("3_insbl")
+weapon_position = NodePath("../Marker2D (Weapon)")
+pickup_area = NodePath(".")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Pickup)"]
+position = Vector2(0, -24)
+shape = SubResource("CircleShape2D_3mip4")
+
+[node name="Area2D (HitBox)" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (HitBox)"]
+position = Vector2(0, -24)
+shape = SubResource("CapsuleShape2D_insbl")
