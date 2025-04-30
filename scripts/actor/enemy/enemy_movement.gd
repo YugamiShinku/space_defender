@@ -19,7 +19,6 @@ var health: float = 100.0
 
 func take_damage(damage):
 	health -= damage
-	print("Health: ", health)
 
 func setup_vision_rays():
 	# Создаем лучи для периферийного зрения

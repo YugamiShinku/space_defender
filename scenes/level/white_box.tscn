@@ -74,4 +74,4 @@ position = Vector2(211, -274.5)
 position = Vector2(212, -243)
 
 [node name="weapon3" parent="." instance=ExtResource("8_0pk08")]
-position = Vector2(213, -226)
+position = Vector2(213, -227)

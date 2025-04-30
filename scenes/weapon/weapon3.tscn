@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://b33drci8du64q"]
+[gd_scene load_steps=6 format=3 uid="uid://b33drci8du64q"]
 
 [ext_resource type="Texture2D" uid="uid://bbhto01k2173p" path="res://assets/weapon/weapon3.png" id="1_m25pm"]
 [ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon_shooting.gd" id="2_yy7hw"]
-[ext_resource type="PackedScene" uid="uid://dljpl56tgwq5y" path="res://scenes/weapon/bullet/bullet1.tscn" id="3_kcdq4"]
+[ext_resource type="PackedScene" uid="uid://dftkr7xbimjpf" path="res://scenes/weapon/bullet/bullet3.tscn" id="3_m25pm"]
+[ext_resource type="Texture2D" uid="uid://ckfo4lopidfcs" path="res://assets/weapon/muzzle/muzzle3.png" id="4_yy7hw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
 size = Vector2(32, 11.5)
@@ -10,10 +11,11 @@ size = Vector2(32, 11.5)
 [node name="weapon3" type="Sprite2D"]
 texture = ExtResource("1_m25pm")
 script = ExtResource("2_yy7hw")
-bullet = ExtResource("3_kcdq4")
+bullet = ExtResource("3_m25pm")
 fire_rate = 0.5
-spread_degrees = 60.0
-bullets_per_shot = 5
+spread_degrees_range = Vector2(-30, 30)
+bullets_per_shot_range = Vector2i(5, 7)
+max_distance_range = Vector2(150, 250)
 
 [node name="Area2D (Pickup)" type="Area2D" parent="."]
 collision_mask = 2
@@ -24,6 +26,12 @@ shape = SubResource("RectangleShape2D_lanok")
 
 [node name="Marker2D (Muzzle)" type="Marker2D" parent="."]
 position = Vector2(15, -2)
+
+[node name="Sprite2D (Muzzle)" type="Sprite2D" parent="."]
+position = Vector2(16.5, -2)
+texture = ExtResource("4_yy7hw")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
 

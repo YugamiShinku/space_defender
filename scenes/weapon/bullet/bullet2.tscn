@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bu1i5wfbku855" path="res://scripts/weapon/bullet/bullet.gd" id="2_hsncw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4hxwj"]
-size = Vector2(7, 5.25)
+size = Vector2(7, 5)
 
 [node name="Bullet2" type="Sprite2D"]
 texture = ExtResource("1_jf4kx")

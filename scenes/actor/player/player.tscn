@@ -120,7 +120,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3mip4"]
-radius = 50.0
+radius = 150.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_insbl"]
 height = 46.0
@@ -155,15 +155,25 @@ animation = &"idle_front"
 [node name="Marker2D (Weapon)" type="Marker2D" parent="."]
 position = Vector2(0, -24)
 
-[node name="Area2D (Pickup)" type="Area2D" parent="." node_paths=PackedStringArray("weapon_position", "pickup_area")]
-visible = false
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+
+[node name="Area2D (Pickup)" type="Area2D" parent="." node_paths=PackedStringArray("weapon_position", "pickup_area", "detection_area")]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("3_insbl")
 weapon_position = NodePath("../Marker2D (Weapon)")
 pickup_area = NodePath(".")
+detection_area = NodePath("../Area2D (Detector)")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Pickup)"]
+position = Vector2(0, -24)
+shape = SubResource("CircleShape2D_3mip4")
+
+[node name="Area2D (Detector)" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Detector)"]
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_3mip4")
 
@@ -174,3 +184,5 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (HitBox)"]
 position = Vector2(0, -24)
 shape = SubResource("CapsuleShape2D_insbl")
+
+[connection signal="area_entered" from="Area2D (Detector)" to="." method="_on_area_2d_detector_area_entered"]
