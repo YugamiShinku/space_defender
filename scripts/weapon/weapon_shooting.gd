@@ -10,6 +10,7 @@ extends Sprite2D
 @export var bullet_speed_range: Vector2 = Vector2(500, 700)
 
 @onready var muzzle: Marker2D = $"Marker2D (Muzzle)"
+@onready var pickup_area: Area2D = $"Area2D (Pickup)"
 @onready var shoot_timer: Timer = $Timer
 @onready var muzzle_sprite: Sprite2D = $"Sprite2D (Muzzle)"
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
@@ -19,6 +20,9 @@ var can_shoot: bool = true
 func _ready():
 	shoot_timer.wait_time = fire_rate
 	muzzle_sprite.visible = false
+
+func set_collision_layer_value(mask: int, enabled: bool):
+	pickup_area.set_collision_layer_value(mask, enabled)
 
 func shoot(direction: Vector2):
 	if !can_shoot || !bullet:
