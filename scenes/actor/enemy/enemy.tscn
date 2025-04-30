@@ -1,0 +1,168 @@
+[gd_scene load_steps=17 format=3 uid="uid://bp0ocsulst6fr"]
+
+[ext_resource type="Script" uid="uid://bmrt0cv4toxos" path="res://scripts/actor/enemy/enemy_movement.gd" id="1_q2h73"]
+[ext_resource type="Texture2D" uid="uid://cdjhuhkusixu1" path="res://assets/actor/enemy/enemy.png" id="2_q2h73"]
+
+[sub_resource type="Gradient" id="Gradient_4mfkd"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.168103, 0.349138, 0.655172, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.840237, 0.840237, 0.840237, 1, 0.0400113, 0.0400113, 0.0400113, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q2h73"]
+gradient = SubResource("Gradient_4mfkd")
+width = 208
+height = 208
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mfkd"]
+height = 22.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pw0vb"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(32, 64, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyjvj"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(32, 128, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4lsqg"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(0, 128, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_edavc"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(64, 128, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icab4"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(0, 64, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_npimb"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(64, 64, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3050"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(32, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fpuwb"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(0, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6p6t"]
+atlas = ExtResource("2_q2h73")
+region = Rect2(64, 0, 32, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4mfkd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pw0vb")
+}],
+"loop": true,
+"name": &"idle_front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nyjvj")
+}],
+"loop": true,
+"name": &"walk_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4lsqg")
+}],
+"loop": true,
+"name": &"walk_down_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_edavc")
+}],
+"loop": true,
+"name": &"walk_down_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_icab4")
+}],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_npimb")
+}],
+"loop": true,
+"name": &"walk_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3050")
+}],
+"loop": true,
+"name": &"walk_top",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fpuwb")
+}],
+"loop": true,
+"name": &"walk_top_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6p6t")
+}],
+"loop": true,
+"name": &"walk_top_right",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q2h73"]
+height = 46.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+y_sort_enabled = true
+script = ExtResource("1_q2h73")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(0, -24)
+range_z_max = 0
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 2.0
+texture = SubResource("GradientTexture2D_q2h73")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_4mfkd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -24)
+sprite_frames = SubResource("SpriteFrames_4mfkd")
+animation = &"idle_front"
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="VisionRays" type="Node2D" parent="."]
+
+[node name="Area2D (Hit Box)" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Hit Box)"]
+position = Vector2(0, -24)
+shape = SubResource("CapsuleShape2D_q2h73")

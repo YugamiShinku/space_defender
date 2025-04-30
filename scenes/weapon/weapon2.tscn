@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://csk54rbc5onda"]
+
+[ext_resource type="Texture2D" uid="uid://ducolv6rwbs4w" path="res://assets/weapon/weapon2.png" id="1_mjopa"]
+[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon_shooting.gd" id="2_p12ni"]
+[ext_resource type="PackedScene" uid="uid://86gukhbcc4xq" path="res://scenes/weapon/bullet/bullet2.tscn" id="3_mjopa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
+size = Vector2(32, 11.5)
+
+[node name="weapon2" type="Sprite2D"]
+texture = ExtResource("1_mjopa")
+script = ExtResource("2_p12ni")
+bullet = ExtResource("3_mjopa")
+damage = 25
+
+[node name="Area2D (Pickup)" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Pickup)"]
+position = Vector2(0, 0.25)
+shape = SubResource("RectangleShape2D_lanok")
+
+[node name="Marker2D (Muzzle)" type="Marker2D" parent="."]
+position = Vector2(15, -2)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
