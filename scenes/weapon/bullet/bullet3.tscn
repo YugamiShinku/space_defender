@@ -6,15 +6,17 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4hxwj"]
 size = Vector2(5, 3)
 
-[node name="Bullet2" type="Sprite2D"]
+[node name="Bullet3" type="Sprite2D"]
 texture = ExtResource("1_2hqcs")
 script = ExtResource("2_qglpg")
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
 collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 y_sort_enabled = true
 shape = SubResource("RectangleShape2D_4hxwj")
 
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

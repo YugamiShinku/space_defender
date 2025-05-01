@@ -11,7 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_x2hje")
-main_menu = ExtResource("2_mhswj")
+main_menu_scene = ExtResource("2_mhswj")
 metadata/_edit_lock_ = true
 
 [node name="Audio" type="Label" parent="."]

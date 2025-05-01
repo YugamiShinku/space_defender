@@ -1,29 +1,36 @@
-extends Sprite2D
+class_name Bullet extends Node2D
 
-var speed: float = 0.0
+var damage: int = 10
+var speed: float = 500.0
 var direction: Vector2 = Vector2.ZERO
-var damage: int = 0
+var max_distance: float = 750.0
 
-var distance_traveled: float = 0.0
-var max_distance: float = 0.0
+var _distance_traveled: float = 0.0
 
-func set_parameters(dmg: int, dir: Vector2, sr: Vector2, mdr: Vector2):
-	self.damage = dmg
-	self.direction = dir
-	self.speed = randf_range(sr.x, sr.y)
-	self.max_distance = randf_range(mdr.x, mdr.y)
+func initialize(new_damage: int, new_direction: Vector2, new_speed: float, new_max_distance: float) -> void:
+	damage = new_damage
+	speed = new_speed
+	direction = new_direction
+	max_distance = new_max_distance
+	rotation = new_direction.angle()
 
-
-func _physics_process(delta):
+func _physics_process(delta) -> void:
 	var movement = direction * speed * delta
 	position += movement
-	distance_traveled += movement.length()
+	_distance_traveled += movement.length()
 	
-	if distance_traveled >= max_distance:
-		queue_free()
+	if _distance_traveled >= max_distance:
+		_destroy()
 
+func _destroy() -> void:
+	queue_free()
 
-func _on_area_2d_body_entered(body: Node2D):
+func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.has_method("take_damage"):
 		body.take_damage(damage)
-	queue_free()
+	_destroy()
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.has_method("take_damage"):
+		area.take_damage(damage)
+	_destroy()

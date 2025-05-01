@@ -1,8 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://cwag33x4rk4mh"]
+[gd_scene load_steps=30 format=3 uid="uid://cwag33x4rk4mh"]
 
-[ext_resource type="Script" uid="uid://d4a01a7cbgxiu" path="res://scripts/actor/player/player_movement.gd" id="1_3mip4"]
+[ext_resource type="Script" uid="uid://ct14n3pajnjc6" path="res://scripts/actor/player/player_controller.gd" id="1_45651"]
 [ext_resource type="Texture2D" uid="uid://vigl3dpj8e55" path="res://assets/actor/player/player.png" id="2_insbl"]
-[ext_resource type="Script" uid="uid://dgji7k80x8k3b" path="res://scripts/actor/player/player_equipment.gd" id="3_insbl"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://bd2d2emvvqapf" path="res://animations/actor/actor.tres" id="3_fruo1"]
+[ext_resource type="Script" uid="uid://cmmcqs0eropda" path="res://scripts/actor/actor_animator.gd" id="4_rwg1c"]
+[ext_resource type="Script" uid="uid://b43vtels5n8e2" path="res://scripts/actor/actor_detector.gd" id="6_45651"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mfkd"]
 radius = 8.0
@@ -119,6 +121,271 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_385dm"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["idle_front"]
+}
+
+[sub_resource type="Animation" id="Animation_fruo1"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["walk_down"]
+}
+
+[sub_resource type="Animation" id="Animation_rwg1c"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["walk_down_left"]
+}
+
+[sub_resource type="Animation" id="Animation_45651"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["walk_down_right"]
+}
+
+[sub_resource type="Animation" id="Animation_itu6y"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["walk_left"]
+}
+
+[sub_resource type="Animation" id="Animation_gw8h6"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["walk_right"]
+}
+
+[sub_resource type="Animation" id="Animation_egpl5"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["walk_top"]
+}
+
+[sub_resource type="Animation" id="Animation_r3jy3"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["walk_top_left"]
+}
+
+[sub_resource type="Animation" id="Animation_x0gpd"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["walk_top_right"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_da11b"]
+_data = {
+&"idle_front": SubResource("Animation_385dm"),
+&"walk_down": SubResource("Animation_fruo1"),
+&"walk_down_left": SubResource("Animation_rwg1c"),
+&"walk_down_right": SubResource("Animation_45651"),
+&"walk_left": SubResource("Animation_itu6y"),
+&"walk_right": SubResource("Animation_gw8h6"),
+&"walk_top": SubResource("Animation_egpl5"),
+&"walk_top_left": SubResource("Animation_r3jy3"),
+&"walk_top_right": SubResource("Animation_x0gpd")
+}
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_3mip4"]
 radius = 50.0
 
@@ -128,9 +395,13 @@ radius = 150.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_insbl"]
 height = 46.0
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("weapon_position", "weapon_detector", "enemy_detector")]
 y_sort_enabled = true
-script = ExtResource("1_3mip4")
+collision_layer = 2
+script = ExtResource("1_45651")
+weapon_position = NodePath("Marker2D (Weapon)")
+weapon_detector = NodePath("Area2D (Pickup)")
+enemy_detector = NodePath("Area2D (Detector)")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1, 1)
@@ -143,7 +414,6 @@ drag_left_margin = 0.05
 drag_top_margin = 0.05
 drag_right_margin = 0.05
 drag_bottom_margin = 0.05
-editor_draw_screen = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -9)
@@ -155,36 +425,59 @@ position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_4mfkd")
 animation = &"idle_front"
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_da11b")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="." node_paths=PackedStringArray("actor_movement")]
+tree_root = ExtResource("3_fruo1")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_idle = false
+parameters/conditions/is_walking = false
+parameters/idle/blend_position = Vector2(0, 0)
+parameters/walk/blend_position = Vector2(0, 0)
+script = ExtResource("4_rwg1c")
+actor_movement = NodePath("..")
+
 [node name="Marker2D (Weapon)" type="Marker2D" parent="."]
 position = Vector2(0, -24)
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 
-[node name="Area2D (Pickup)" type="Area2D" parent="." node_paths=PackedStringArray("weapon_position", "pickup_area", "detection_area")]
-collision_mask = 3
-script = ExtResource("3_insbl")
-weapon_position = NodePath("../Marker2D (Weapon)")
-pickup_area = NodePath(".")
-detection_area = NodePath("../Area2D (Detector)")
+[node name="Area2D (Pickup)" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+script = ExtResource("6_45651")
 
-[node name="CollisionShape2D (Pickup)" type="CollisionShape2D" parent="Area2D (Pickup)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Pickup)"]
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_3mip4")
 
 [node name="Area2D (Detector)" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 8
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("6_45651")
 
-[node name="CollisionShape2D (Detector)" type="CollisionShape2D" parent="Area2D (Detector)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Detector)"]
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_385dm")
 
-[node name="Area2D (HitBox)" type="Area2D" parent="."]
-collision_layer = 4
-collision_mask = 4
+[node name="Area2D (Hit Box)" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (HitBox)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Hit Box)"]
 position = Vector2(0, -24)
 shape = SubResource("CapsuleShape2D_insbl")
 
-[connection signal="area_entered" from="Area2D (Detector)" to="." method="_on_area_2d_detector_area_entered"]
+[connection signal="area_entered" from="Area2D (Pickup)" to="Area2D (Pickup)" method="_on_area_entered"]
+[connection signal="area_exited" from="Area2D (Pickup)" to="Area2D (Pickup)" method="_on_area_exited"]
+[connection signal="body_entered" from="Area2D (Pickup)" to="Area2D (Pickup)" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D (Pickup)" to="Area2D (Pickup)" method="_on_body_exited"]
+[connection signal="area_entered" from="Area2D (Detector)" to="Area2D (Detector)" method="_on_area_entered"]
+[connection signal="area_exited" from="Area2D (Detector)" to="Area2D (Detector)" method="_on_area_exited"]
+[connection signal="body_entered" from="Area2D (Detector)" to="Area2D (Detector)" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D (Detector)" to="Area2D (Detector)" method="_on_body_exited"]
