@@ -1,6 +1,5 @@
 class_name ActorEquipment extends ActorMovement
 
-@export_category("Equipment")
 @export var max_weapons: int = 2
 @export var weapon_rotation_speed: float = 7.5
 
@@ -27,7 +26,6 @@ func drop_current_weapon():
 	weapon_to_drop.visible = true
 	weapon_to_drop.setup_pickable(true)
 	
-	# Переключаемся на следующее оружие
 	if weapons.size() > 0:
 		current_weapon_i = clamp(current_weapon_i, 0, weapons.size() - 1)
 		switch_weapon(current_weapon_i)
@@ -35,12 +33,13 @@ func drop_current_weapon():
 		current_weapon_i = -1
 
 func pickup_nearest_weapon():
-	if weapon_detector.targets.is_empty(): return
+	if weapon_detector.get_targets().is_empty(): return
 	
 	if weapons.size() >= max_weapons:
 		drop_current_weapon()
 	
 	var weapon = weapon_detector.get_nearest_target()
+	if !weapon: return
 	weapon.get_parent().remove_child(weapon)
 	weapon_position.add_child(weapon)
 	weapon.global_position = weapon_position.global_position

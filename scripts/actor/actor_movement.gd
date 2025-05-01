@@ -1,6 +1,5 @@
 class_name ActorMovement extends CharacterBody2D
 
-@export_category("Movement")
 @export var movement_speed: float = 150.0
 @export var movement_acceleration: float = 5.0
 @export var movement_deceleration: float = 10.0

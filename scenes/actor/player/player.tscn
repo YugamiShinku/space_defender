@@ -445,27 +445,39 @@ position = Vector2(0, -24)
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 
-[node name="Area2D (Pickup)" type="Area2D" parent="."]
+[node name="RayCast2D (Pickup)" type="RayCast2D" parent="."]
+position = Vector2(0, -15)
+target_position = Vector2(0, 0)
+
+[node name="Area2D (Pickup)" type="Area2D" parent="." node_paths=PackedStringArray("ray_cast")]
 collision_layer = 0
 collision_mask = 8
 monitorable = false
 script = ExtResource("6_45651")
+ray_cast = NodePath("../RayCast2D (Detector)")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Pickup)"]
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_3mip4")
 
-[node name="Area2D (Detector)" type="Area2D" parent="."]
+[node name="RayCast2D (Detector)" type="RayCast2D" parent="."]
+position = Vector2(0, -15)
+target_position = Vector2(0, 0)
+
+[node name="Area2D (Detector)" type="Area2D" parent="." node_paths=PackedStringArray("ray_cast")]
+visible = false
 collision_layer = 0
 collision_mask = 4
 monitorable = false
 script = ExtResource("6_45651")
+ray_cast = NodePath("../RayCast2D (Detector)")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Detector)"]
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_385dm")
 
 [node name="Area2D (Hit Box)" type="Area2D" parent="."]
+visible = false
 collision_layer = 16
 collision_mask = 0
 

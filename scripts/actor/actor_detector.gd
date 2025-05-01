@@ -1,24 +1,38 @@
 class_name ActorDetector extends Area2D
 
-var targets: Array[Node2D] = []
+@export var ray_cast: RayCast2D
+
+var _targets: Array[Node2D] = []
+
+func _is_target_acceptable(target: Node2D) -> bool:
+	ray_cast.target_position = to_local(target.global_position)
+	ray_cast.force_raycast_update()
+	return !ray_cast.is_colliding()	
 
 func _on_area_entered(area: Area2D) -> void:
-	targets.append(area.get_parent())
+	ray_cast.target_position = to_local(area.global_position)
+	ray_cast.force_raycast_update()
+	_targets.append(area.get_parent())
 
 func _on_area_exited(area: Area2D) -> void:
-	targets.erase(area.get_parent())
+	_targets.erase(area.get_parent())
 
 func _on_body_entered(body: Node2D) -> void:
-	targets.append(body)
+	ray_cast.target_position = to_local(body.global_position)
+	ray_cast.force_raycast_update()
+	_targets.append(body)
 
 func _on_body_exited(body: Node2D) -> void:
-	targets.erase(body)
-
-func get_nearest_target() -> Node2D:	
+	_targets.erase(body)
+	
+func get_targets() -> Array[Node2D]:
+	return _targets.filter(_is_target_acceptable)
+	
+func get_nearest_target() -> Node2D:
 	var nearest_target: Node2D = null
 	var min_distance: float = INF
 	
-	for target in targets:
+	for target in get_targets():
 		var distance = global_position.distance_to(target.global_position)
 		if distance < min_distance:
 			min_distance = distance

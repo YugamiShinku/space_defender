@@ -390,7 +390,7 @@ _data = {
 radius = 50.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eathr"]
-radius = 150.0
+radius = 200.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q2h73"]
 height = 46.0
@@ -402,11 +402,12 @@ script = ExtResource("1_o0vbu")
 weapon_position = NodePath("Marker2D (Weapon)")
 weapon_detector = NodePath("Area2D (Pickup)")
 enemy_detector = NodePath("Area2D (Detector)")
+movement_speed = 100.0
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -10)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_4mfkd")
@@ -434,29 +435,39 @@ actor_movement = NodePath("..")
 [node name="Marker2D (Weapon)" type="Marker2D" parent="."]
 position = Vector2(0, -24)
 
-[node name="VisionRays" type="Node2D" parent="."]
+[node name="RayCast2D (Pickup)" type="RayCast2D" parent="."]
+position = Vector2(0, -18)
+target_position = Vector2(0, 0)
 
-[node name="Area2D (Pickup)" type="Area2D" parent="."]
+[node name="Area2D (Pickup)" type="Area2D" parent="." node_paths=PackedStringArray("ray_cast")]
 collision_layer = 0
 collision_mask = 8
 monitorable = false
 script = ExtResource("5_qtsib")
+ray_cast = NodePath("../RayCast2D (Pickup)")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Pickup)"]
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_khmag")
 
-[node name="Area2D (Detector)" type="Area2D" parent="."]
+[node name="RayCast2D (Detector)" type="RayCast2D" parent="."]
+position = Vector2(0, -18)
+target_position = Vector2(0, 0)
+
+[node name="Area2D (Detector)" type="Area2D" parent="." node_paths=PackedStringArray("ray_cast")]
+visible = false
 collision_layer = 0
 collision_mask = 2
 monitorable = false
 script = ExtResource("5_qtsib")
+ray_cast = NodePath("../RayCast2D (Detector)")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Detector)"]
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_eathr")
 
 [node name="Area2D (Hit Box)" type="Area2D" parent="."]
+visible = false
 collision_layer = 16
 collision_mask = 0
 

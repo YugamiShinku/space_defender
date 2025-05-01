@@ -20,17 +20,14 @@ func _physics_process(delta) -> void:
 	_distance_traveled += movement.length()
 	
 	if _distance_traveled >= max_distance:
-		_destroy()
-
-func _destroy() -> void:
-	queue_free()
+		queue_free()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.has_method("take_damage"):
 		body.take_damage(damage)
-	_destroy()
+	queue_free()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.has_method("take_damage"):
 		area.take_damage(damage)
-	_destroy()
+	queue_free()
