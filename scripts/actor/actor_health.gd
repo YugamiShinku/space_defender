@@ -6,7 +6,7 @@ func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 
 func take_damage(damage):
-	print("take damage: ", self.name)
+	#print("take damage: ", self.name)
 	health -= damage
 	if is_dead():
 		self.queue_free()

@@ -42,14 +42,14 @@ func shoot(direction: Vector2):
 	current_ammo -= 1
 
 	var bullets_per_shot = randf_range(bullets_per_shot_range.x, bullets_per_shot_range.y)
-	for i in bullets_per_shot:
+	for _i in bullets_per_shot:
 		var bullet = bullet_scene.instantiate()
 		var bullet_direction = direction.rotated(deg_to_rad(randf_range(bullet_spread_degrees_range.x, bullet_spread_degrees_range.y)))
 		var bullet_speed = randf_range(bullet_speed_range.x, bullet_speed_range.y)
 		var bullet_max_distance = randf_range(bullet_max_distance_range.x, bullet_max_distance_range.y)
 	
 		bullet.initialize(bullet_damage, bullet_direction, bullet_speed, bullet_max_distance)
-		get_parent().add_child(bullet)
+		get_tree().current_scene.add_child(bullet)
 		
 		bullet.global_position = muzzle.global_position
 
