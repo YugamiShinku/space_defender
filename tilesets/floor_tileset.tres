@@ -1,6 +1,12 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://d2gtfu8hufh0j"]
+[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://d2gtfu8hufh0j"]
 
 [ext_resource type="Texture2D" uid="uid://d4e67vioqjan8" path="res://assets/environment/environment.png" id="1_hfefg"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_hfefg"]
+vertices = PackedVector2Array(16, 23.3359, -16, 23.3359, -16, 3.33594, 16, 3.33594)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, 3.33333, 16, 3.33333, 16, 23.3333, -16, 23.3333)])
+agent_radius = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wtcfe"]
 resource_name = "environment"
@@ -9,9 +15,11 @@ texture_region_size = Vector2i(32, 48)
 0:0/0 = 0
 1:0/0 = 0
 1:0/0/texture_origin = Vector2i(0, -6)
+1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_hfefg")
 2:0/0 = 0
 
 [resource]
 tile_size = Vector2i(32, 20)
 occlusion_layer_0/light_mask = 1
+navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_wtcfe")

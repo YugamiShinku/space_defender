@@ -16,7 +16,6 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 
-	if Input.is_action_pressed("shoot") && _get_current_weapon():
-		if weapons[current_weapon_i].has_method("shoot"):
-			var shoot_direction = Vector2.RIGHT.rotated(weapons[current_weapon_i].global_rotation)
-			weapons[current_weapon_i].shoot(shoot_direction)
+	var current_weapon = get_current_weapon()
+	if Input.is_action_pressed("shoot") && current_weapon:
+		current_weapon.shoot(Vector2.RIGHT.rotated(current_weapon.global_rotation))

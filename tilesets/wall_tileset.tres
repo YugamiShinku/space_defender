@@ -1,6 +1,9 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://w1fmige5xhdu"]
+[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://w1fmige5xhdu"]
 
 [ext_resource type="Texture2D" uid="uid://d4e67vioqjan8" path="res://assets/environment/environment.png" id="1_vsnn4"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vsnn4"]
+friction = 0.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_4mfkd"]
 polygon = PackedVector2Array(-16, 24, 16, 24, 16, -4, 16, -24, -16, -24, -16, -4)
@@ -14,13 +17,14 @@ texture = ExtResource("1_vsnn4")
 texture_region_size = Vector2i(32, 48)
 0:0/0 = 0
 0:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_4mfkd")
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -5, 16, -5, 16, 25, -16, 25)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, 5, 16, 5, 16, 25, -16, 25)
 2:0/0 = 0
 2:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_fqctn")
-2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, 7.5, 16, 7.5, 16, 25, -16, 25)
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, 5, 16, 5, 16, 25, -16, 25)
 
 [resource]
 tile_size = Vector2i(32, 20)
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_vsnn4")
 sources/0 = SubResource("TileSetAtlasSource_iyf3d")
