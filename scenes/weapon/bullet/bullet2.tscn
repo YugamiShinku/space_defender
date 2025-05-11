@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://86gukhbcc4xq"]
+[gd_scene load_steps=6 format=3 uid="uid://86gukhbcc4xq"]
 
 [ext_resource type="Texture2D" uid="uid://dnjr37mpmkkhd" path="res://assets/weapon/bullet/bullet2.png" id="1_jf4kx"]
 [ext_resource type="Script" uid="uid://bu1i5wfbku855" path="res://scripts/weapon/bullet/bullet.gd" id="2_hsncw"]
@@ -6,17 +6,38 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4hxwj"]
 size = Vector2(7, 5)
 
-[node name="Bullet2" type="Sprite2D"]
+[sub_resource type="Gradient" id="Gradient_nuxjy"]
+colors = PackedColorArray(0.894118, 0.894118, 0.894118, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nuxjy"]
+gradient = SubResource("Gradient_nuxjy")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[node name="Sprite2D (Bullet)" type="Sprite2D"]
 texture = ExtResource("1_jf4kx")
 script = ExtResource("2_hsncw")
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 7
+[node name="Area2D (Collider)" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D (Collider)" type="CollisionShape2D" parent="Area2D (Collider)"]
 y_sort_enabled = true
 shape = SubResource("RectangleShape2D_4hxwj")
 
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[node name="PointLight2D (Light)" type="PointLight2D" parent="."]
+y_sort_enabled = true
+color = Color(1, 0.745098, 0.423529, 1)
+energy = 0.5
+range_item_cull_mask = 7
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 3.0
+shadow_item_cull_mask = 3
+texture = SubResource("GradientTexture2D_nuxjy")
+height = 64.0
+
+[connection signal="area_entered" from="Area2D (Collider)" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D (Collider)" to="." method="_on_area_2d_body_entered"]

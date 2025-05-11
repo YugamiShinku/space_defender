@@ -1,14 +1,18 @@
-[gd_scene load_steps=31 format=3 uid="uid://bp0ocsulst6fr"]
+[gd_scene load_steps=36 format=3 uid="uid://bp0ocsulst6fr"]
 
-[ext_resource type="Script" uid="uid://caulrarcccxa0" path="res://scripts/actor/enemy/patrol_target_controller.gd" id="1_o0vbu"]
+[ext_resource type="Script" uid="uid://pgm1sd3syd54" path="res://scripts/actor/actor_movement.gd" id="1_3wg1p"]
+[ext_resource type="Script" uid="uid://hl7kcwp8waw2" path="res://scripts/actor/navigation/target_navigation.gd" id="2_7mrng"]
 [ext_resource type="Texture2D" uid="uid://cdjhuhkusixu1" path="res://assets/actor/enemy/enemy.png" id="2_q2h73"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://bd2d2emvvqapf" path="res://animations/actor/actor.tres" id="3_lry3b"]
 [ext_resource type="Script" uid="uid://cmmcqs0eropda" path="res://scripts/actor/actor_animator.gd" id="4_m21n4"]
-[ext_resource type="PackedScene" uid="uid://b33drci8du64q" path="res://scenes/weapon/weapon3.tscn" id="5_khmag"]
 [ext_resource type="Script" uid="uid://b43vtels5n8e2" path="res://scripts/actor/actor_detector.gd" id="5_qtsib"]
+[ext_resource type="Script" uid="uid://ltvf8d8y81xv" path="res://scripts/actor/actor_health.gd" id="7_7mrng"]
+[ext_resource type="Script" uid="uid://cjwopymmastao" path="res://scripts/actor/enemy/enemy_controller.gd" id="7_f0d4w"]
+[ext_resource type="Script" uid="uid://dgji7k80x8k3b" path="res://scripts/actor/actor_equipment.gd" id="8_7mrng"]
+[ext_resource type="Script" uid="uid://beubjhl8fox7c" path="res://scripts/actor/aimer/actor_movement_aimer.gd" id="9_f0d4w"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mfkd"]
-radius = 4.0
+radius = 6.0
 height = 20.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pw0vb"]
@@ -396,38 +400,39 @@ radius = 200.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qtsib"]
 height = 46.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("aim_detector", "weapon_position", "weapon_detector", "weapons")]
-y_sort_enabled = true
-collision_layer = 5
-script = ExtResource("1_o0vbu")
-aim_detector = NodePath("Area2D (Aim Detector)")
-collision_hitbox = 3
-max_weapons = 1
-weapon_position = NodePath("Marker2D (Weapon)")
-weapon_detector = NodePath("Area2D (Weapon Detector)")
-weapons = [NodePath("Marker2D (Weapon)/weapon3")]
-current_weapon_i = 0
-movement_speed = 100.0
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3wbbh"]
+polygon = PackedVector2Array(-10, -13, 10, -13, 10, -1, -10, -1)
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-target_desired_distance = 100.0
+[node name="CharacterBody2D (Enemy)" type="CharacterBody2D"]
+y_sort_enabled = true
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_3wg1p")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." node_paths=PackedStringArray("detector")]
+target_desired_distance = 30.0
 path_postprocessing = 1
 simplify_path = true
-simplify_epsilon = 0.5
-avoidance_enabled = true
+simplify_epsilon = 0.75
+radius = 1000.0
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.145098, 0.396078, 0.439216, 1)
+script = ExtResource("2_7mrng")
+detector = NodePath("../Area2D (Aim Detector)")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -5)
+[node name="CollisionShape2D (Collider)" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -7)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_4mfkd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -24)
+light_mask = 4
+position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_4mfkd")
 animation = &"idle_front"
+offset = Vector2(0, -16)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -444,14 +449,16 @@ parameters/walk/blend_position = Vector2(0, 0)
 script = ExtResource("4_m21n4")
 actor_movement = NodePath("..")
 
-[node name="Marker2D (Weapon)" type="Marker2D" parent="."]
+[node name="Marker2D (Pickup Weapon)" type="Marker2D" parent="."]
 position = Vector2(0, -24)
 
-[node name="weapon3" parent="Marker2D (Weapon)" instance=ExtResource("5_khmag")]
+[node name="Marker2D (Drop Weapon)" type="Marker2D" parent="."]
 
 [node name="RayCast2D (Weapon Detector)" type="RayCast2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 target_position = Vector2(0, 0)
+collide_with_areas = true
 
 [node name="Area2D (Weapon Detector)" type="Area2D" parent="." node_paths=PackedStringArray("ray_cast")]
 visible = false
@@ -466,29 +473,58 @@ position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_khmag")
 
 [node name="RayCast2D (Aim Detector)" type="RayCast2D" parent="."]
-position = Vector2(0, -8)
 target_position = Vector2(0, 0)
+collide_with_areas = true
 
-[node name="Area2D (Aim Detector)" type="Area2D" parent="." node_paths=PackedStringArray("ray_cast")]
+[node name="Area2D (Aim Detector)" type="Area2D" parent="." node_paths=PackedStringArray("ray_cast", "area_exceptions")]
 visible = false
 position = Vector2(0, -24)
 collision_layer = 0
-collision_mask = 2
+collision_mask = 4
 monitorable = false
 script = ExtResource("5_qtsib")
 ray_cast = NodePath("../RayCast2D (Aim Detector)")
+area_exceptions = [NodePath("../Area2D (HitBox)")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Aim Detector)"]
 shape = SubResource("CircleShape2D_eathr")
 
 [node name="Area2D (HitBox)" type="Area2D" parent="."]
 visible = false
-collision_layer = 0
-monitoring = false
+collision_layer = 4
+collision_mask = 16
+script = ExtResource("7_7mrng")
 
 [node name="CollisionShape2D (Hit Box)" type="CollisionShape2D" parent="Area2D (HitBox)"]
 position = Vector2(0, -24)
 shape = SubResource("CapsuleShape2D_qtsib")
+
+[node name="Node2D (Controller)" type="Node2D" parent="." node_paths=PackedStringArray("movement", "navigation", "equipment", "aim_detector", "weapon_detector")]
+script = ExtResource("7_f0d4w")
+movement = NodePath("..")
+navigation = NodePath("../NavigationAgent2D")
+equipment = NodePath("../Node2D (Equipment)")
+aim_detector = NodePath("../Area2D (Aim Detector)")
+weapon_detector = NodePath("../Area2D (Weapon Detector)")
+metadata/_custom_type_script = "uid://cjwopymmastao"
+
+[node name="Node2D (Equipment)" type="Node2D" parent="." node_paths=PackedStringArray("pickup_marker", "drop_marker", "detector")]
+script = ExtResource("8_7mrng")
+pickup_marker = NodePath("../Marker2D (Pickup Weapon)")
+drop_marker = NodePath("../Marker2D (Drop Weapon)")
+detector = NodePath("../Area2D (Weapon Detector)")
+metadata/_custom_type_script = "uid://dgji7k80x8k3b"
+
+[node name="Node2D (Aimer)" type="Node2D" parent="." node_paths=PackedStringArray("movement", "detector", "rotating")]
+script = ExtResource("9_f0d4w")
+movement = NodePath("..")
+detector = NodePath("../Area2D (Aim Detector)")
+rotating = NodePath("../Marker2D (Pickup Weapon)")
+metadata/_custom_type_script = "uid://dylxwbngibnom"
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_3wbbh")
+occluder_light_mask = 3
 
 [connection signal="area_entered" from="Area2D (Weapon Detector)" to="Area2D (Weapon Detector)" method="_on_area_entered"]
 [connection signal="area_exited" from="Area2D (Weapon Detector)" to="Area2D (Weapon Detector)" method="_on_area_exited"]
@@ -498,3 +534,4 @@ shape = SubResource("CapsuleShape2D_qtsib")
 [connection signal="area_exited" from="Area2D (Aim Detector)" to="Area2D (Aim Detector)" method="_on_area_exited"]
 [connection signal="body_entered" from="Area2D (Aim Detector)" to="Area2D (Aim Detector)" method="_on_body_entered"]
 [connection signal="body_exited" from="Area2D (Aim Detector)" to="Area2D (Aim Detector)" method="_on_body_exited"]
+[connection signal="area_entered" from="Area2D (HitBox)" to="Area2D (HitBox)" method="_on_area_entered"]

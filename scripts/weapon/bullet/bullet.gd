@@ -22,12 +22,8 @@ func _physics_process(delta) -> void:
 	if _distance_traveled >= max_distance:
 		queue_free()
 
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.get_parent().has_method("take_damage"):
-		body.get_parent().take_damage(damage)
+func _on_area_2d_body_entered(_body: Node2D) -> void:
 	queue_free()
 
-func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.get_parent().has_method("take_damage"):
-		area.get_parent().take_damage(damage)
+func _on_area_2d_area_entered(_area: Area2D) -> void:
 	queue_free()

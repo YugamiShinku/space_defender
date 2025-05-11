@@ -1,15 +1,14 @@
-class_name ActorHealth extends ActorAimer
+class_name ActorHealth extends Area2D
 
 @export var health: float = 100.0
 
-func _physics_process(delta: float) -> void:
-	super._physics_process(delta)
-
 func take_damage(damage):
-	#print("take damage: ", self.name)
 	health -= damage
 	if is_dead():
-		self.queue_free()
+		get_parent().queue_free()
 
 func is_dead() -> bool:
 	return health <= 0
+
+func _on_area_entered(area: Area2D) -> void:
+	take_damage(area.get_parent().damage)

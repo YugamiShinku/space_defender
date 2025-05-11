@@ -11,7 +11,6 @@ size = Vector2(32, 11.5)
 [node name="weapon2" type="Sprite2D"]
 texture = ExtResource("1_mjopa")
 script = ExtResource("2_p12ni")
-max_ammo = 15
 reload_time = 1.25
 bullet_scene = ExtResource("3_mjopa")
 bullet_damage = 20
@@ -28,7 +27,9 @@ monitoring = false
 shape = SubResource("RectangleShape2D_lanok")
 
 [node name="Marker2D (Muzzle)" type="Marker2D" parent="."]
-position = Vector2(15, -2)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(28, -2)
 
 [node name="Sprite2D (Muzzle)" type="Sprite2D" parent="."]
 visible = false

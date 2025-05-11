@@ -1,25 +1,109 @@
-[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://d2gtfu8hufh0j"]
+[gd_resource type="TileSet" load_steps=10 format=3 uid="uid://d2gtfu8hufh0j"]
 
-[ext_resource type="Texture2D" uid="uid://d4e67vioqjan8" path="res://assets/environment/environment.png" id="1_hfefg"]
+[ext_resource type="Texture2D" uid="uid://dym0mpy5fpvdd" path="res://assets/environment/png/diffuse/floor_warning.png" id="1_1kfga"]
+[ext_resource type="Texture2D" uid="uid://526xwy37vw6e" path="res://assets/environment/png/diffuse/floor.png" id="1_hfefg"]
+[ext_resource type="Texture2D" uid="uid://c7ku8ieubu306" path="res://assets/environment/png/normal/floor_normal.png" id="2_cnrs8"]
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_hfefg"]
-vertices = PackedVector2Array(16, 23.3359, -16, 23.3359, -16, 3.33594, 16, 3.33594)
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1kfga"]
+vertices = PackedVector2Array(24, 0, 0, 12, -24, 0, 0, -12)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-16, 3.33333, 16, 3.33333, 16, 23.3333, -16, 23.3333)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(0, 12, 24, 0, 0, -12, -24, 0)])
 agent_radius = 0.0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wtcfe"]
-resource_name = "environment"
-texture = ExtResource("1_hfefg")
-texture_region_size = Vector2i(32, 48)
+[sub_resource type="CanvasTexture" id="CanvasTexture_7si47"]
+diffuse_texture = ExtResource("1_1kfga")
+normal_texture = ExtResource("2_cnrs8")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5wlf"]
+resource_name = "floor_warning"
+texture = SubResource("CanvasTexture_7si47")
+texture_region_size = Vector2i(48, 32)
+0:0/next_alternative_id = 4
 0:0/0 = 0
+0:0/0/texture_origin = Vector2i(16, 4)
+0:0/1 = 1
+0:0/1/texture_origin = Vector2i(0, -4)
+0:0/2 = 2
+0:0/2/flip_h = true
+0:0/2/texture_origin = Vector2i(-16, 4)
+0:0/3 = 3
+0:0/3/flip_h = true
+0:0/3/texture_origin = Vector2i(0, -4)
 1:0/0 = 0
-1:0/0/texture_origin = Vector2i(0, -6)
-1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_hfefg")
-2:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, -4)
+1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_1kfga")
+1:1/0 = 0
+1:1/0/texture_origin = Vector2i(0, 4)
+1:2/0 = 0
+1:2/0/texture_origin = Vector2i(0, -4)
+0:1/next_alternative_id = 2
+0:1/0 = 0
+0:1/0/texture_origin = Vector2i(16, -4)
+0:1/1 = 1
+0:1/1/flip_h = true
+0:1/1/texture_origin = Vector2i(-16, -4)
+0:2/next_alternative_id = 4
+0:2/0 = 0
+0:2/0/texture_origin = Vector2i(0, -4)
+0:2/1 = 1
+0:2/1/texture_origin = Vector2i(16, 4)
+0:2/2 = 2
+0:2/2/texture_origin = Vector2i(32, -4)
+0:2/3 = 3
+0:2/3/texture_origin = Vector2i(16, -12)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ruxv4"]
+vertices = PackedVector2Array(24, 0, 0, 12, -24, 0, 0, -12)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-24, 0, 0, -12, 24, 0, 0, 12)])
+agent_radius = 0.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_1kfga"]
+diffuse_texture = ExtResource("1_hfefg")
+normal_texture = ExtResource("2_cnrs8")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5kadq"]
+resource_name = "floor"
+texture = SubResource("CanvasTexture_1kfga")
+texture_region_size = Vector2i(48, 32)
+0:0/next_alternative_id = 4
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(16, 4)
+0:0/1 = 1
+0:0/1/texture_origin = Vector2i(0, -4)
+0:0/2 = 2
+0:0/2/flip_h = true
+0:0/2/texture_origin = Vector2i(-16, 4)
+0:0/3 = 3
+0:0/3/flip_h = true
+0:0/3/texture_origin = Vector2i(0, -4)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, -4)
+1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ruxv4")
+1:1/0 = 0
+1:1/0/texture_origin = Vector2i(0, 4)
+1:2/0 = 0
+1:2/0/texture_origin = Vector2i(0, -4)
+0:1/next_alternative_id = 2
+0:1/0 = 0
+0:1/0/texture_origin = Vector2i(16, -4)
+0:1/1 = 1
+0:1/1/flip_h = true
+0:1/1/texture_origin = Vector2i(-16, -4)
+0:2/next_alternative_id = 4
+0:2/0 = 0
+0:2/0/texture_origin = Vector2i(0, -4)
+0:2/1 = 1
+0:2/1/texture_origin = Vector2i(16, 4)
+0:2/2 = 2
+0:2/2/texture_origin = Vector2i(32, -4)
+0:2/3 = 3
+0:2/3/texture_origin = Vector2i(16, -12)
 
 [resource]
-tile_size = Vector2i(32, 20)
+tile_shape = 1
+tile_size = Vector2i(48, 24)
 occlusion_layer_0/light_mask = 1
 navigation_layer_0/layers = 1
-sources/0 = SubResource("TileSetAtlasSource_wtcfe")
+sources/1 = SubResource("TileSetAtlasSource_5kadq")
+sources/0 = SubResource("TileSetAtlasSource_e5wlf")

@@ -1,25 +1,28 @@
 class_name ActorDetector extends Area2D
 
 @export var ray_cast: RayCast2D
+@export var area_exceptions: Array[Area2D] = []
+@export var body_exceptions: Array[CollisionObject2D] = []
 
 var _targets: Array[Node2D] = []
 
+func _ready() -> void:
+	for body in body_exceptions:
+		ray_cast.add_exception(body)
+
 func _is_target_acceptable(target: Node2D) -> bool:
-	ray_cast.target_position = to_local(target.global_position)
+	ray_cast.target_position = ray_cast.to_local(target.global_position)
 	ray_cast.force_raycast_update()
 	return !ray_cast.is_colliding()	
 
 func _on_area_entered(area: Area2D) -> void:
-	ray_cast.target_position = to_local(area.global_position)
-	ray_cast.force_raycast_update()
+	if area in area_exceptions: return
 	_targets.append(area.get_parent())
 
 func _on_area_exited(area: Area2D) -> void:
 	_targets.erase(area.get_parent())
 
 func _on_body_entered(body: Node2D) -> void:
-	ray_cast.target_position = to_local(body.global_position)
-	ray_cast.force_raycast_update()
 	_targets.append(body)
 
 func _on_body_exited(body: Node2D) -> void:

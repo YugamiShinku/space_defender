@@ -2,12 +2,13 @@ class_name Weapon extends Sprite2D
 
 @export_category("Weapon")
 @export var fire_rate: float = 0.2
-@export var max_ammo: int = 10
+@export var magazines: int = 3
+@export var max_ammo_in_magazine: int = 10
 @export var reload_time: float = 1.5
 @onready var shoot_timer: Timer = $Timer
 @onready var pickup_area: Area2D = $"Area2D (Pickup)"
 @onready var muzzle: Marker2D = $"Marker2D (Muzzle)"
-var current_ammo: int = max_ammo
+var current_ammo: int = max_ammo_in_magazine
 var _can_shoot: bool = true
 
 @export_category("Bullet")
@@ -28,16 +29,14 @@ var _can_shoot: bool = true
 func _ready():
 	shoot_timer.wait_time = fire_rate
 
-func _input(event):
-	if event.is_action_pressed("reload"):
-		reload()
-
 func setup_pickable(enabled: bool):
-	pickup_area.set_collision_layer_value(4, enabled)
+	pickup_area.monitorable = enabled
 
-func shoot(direction: Vector2):
+func shoot():
 	if !_can_shoot || current_ammo <= 0:
 		return
+
+	var direction = Vector2.RIGHT.rotated(global_rotation)
 
 	current_ammo -= 1
 
@@ -63,14 +62,14 @@ func shoot(direction: Vector2):
 	shoot_timer.start()
 
 func reload():
-	if current_ammo >= max_ammo:
+	if current_ammo >= max_ammo_in_magazine:
 		return
 	
 	_can_shoot = false
 
 	await get_tree().create_timer(reload_time).timeout
 	
-	current_ammo = max_ammo
+	current_ammo = max_ammo_in_magazine
 	_can_shoot = true
 
 func start_muzzle_flash():
