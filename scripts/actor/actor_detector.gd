@@ -10,6 +10,15 @@ func _ready() -> void:
 	for body in body_exceptions:
 		ray_cast.add_exception(body)
 
+func _process(delta: float) -> void:
+	for target in get_targets():
+		if target == get_nearest_target():
+			if target.has_method("set_detected"):
+				target.set_detected(true)
+		else:
+			if target.has_method("set_detected"):
+				target.set_detected(false)		
+
 func _is_target_acceptable(target: Node2D) -> bool:
 	ray_cast.target_position = ray_cast.to_local(target.global_position)
 	ray_cast.force_raycast_update()

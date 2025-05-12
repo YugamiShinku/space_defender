@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://bvnjahcre70b"
+path="res://.godot/imported/arches.aseprite-2940b24efc115b034327091a6c3a6088.res"
+
+[deps]
+
+source_file="res://assets/environment/aseprite/arches.aseprite"
+dest_files=["res://.godot/imported/arches.aseprite-2940b24efc115b034327091a6c3a6088.res"]
+
+[params]
+

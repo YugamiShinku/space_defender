@@ -1,9 +1,10 @@
-[gd_scene load_steps=36 format=3 uid="uid://bp0ocsulst6fr"]
+[gd_scene load_steps=38 format=3 uid="uid://bp0ocsulst6fr"]
 
 [ext_resource type="Script" uid="uid://pgm1sd3syd54" path="res://scripts/actor/actor_movement.gd" id="1_3wg1p"]
 [ext_resource type="Script" uid="uid://hl7kcwp8waw2" path="res://scripts/actor/navigation/target_navigation.gd" id="2_7mrng"]
 [ext_resource type="Texture2D" uid="uid://cdjhuhkusixu1" path="res://assets/actor/enemy/enemy.png" id="2_q2h73"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://bd2d2emvvqapf" path="res://animations/actor/actor.tres" id="3_lry3b"]
+[ext_resource type="Shader" uid="uid://s57jlne0bimo" path="res://shaders/outline.tres" id="3_pmlkf"]
 [ext_resource type="Script" uid="uid://cmmcqs0eropda" path="res://scripts/actor/actor_animator.gd" id="4_m21n4"]
 [ext_resource type="Script" uid="uid://b43vtels5n8e2" path="res://scripts/actor/actor_detector.gd" id="5_qtsib"]
 [ext_resource type="Script" uid="uid://ltvf8d8y81xv" path="res://scripts/actor/actor_health.gd" id="7_7mrng"]
@@ -14,6 +15,13 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mfkd"]
 radius = 6.0
 height = 20.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bv4h"]
+shader = ExtResource("3_pmlkf")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/blink_color = Color(1, 1, 1, 1)
+shader_parameter/blink_intensity = 0.0
+shader_parameter/outline_thickness = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pw0vb"]
 atlas = ExtResource("2_q2h73")
@@ -403,11 +411,12 @@ height = 46.0
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3wbbh"]
 polygon = PackedVector2Array(-10, -13, 10, -13, 10, -1, -10, -1)
 
-[node name="CharacterBody2D (Enemy)" type="CharacterBody2D"]
+[node name="CharacterBody2D (Enemy)" type="CharacterBody2D" node_paths=PackedStringArray("health")]
 y_sort_enabled = true
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("1_3wg1p")
+health = NodePath("Area2D (HitBox)")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." node_paths=PackedStringArray("detector")]
 target_desired_distance = 30.0
@@ -429,6 +438,7 @@ shape = SubResource("CapsuleShape2D_4mfkd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 light_mask = 4
+material = SubResource("ShaderMaterial_1bv4h")
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_4mfkd")
 animation = &"idle_front"
@@ -489,19 +499,24 @@ area_exceptions = [NodePath("../Area2D (HitBox)")]
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Aim Detector)"]
 shape = SubResource("CircleShape2D_eathr")
 
-[node name="Area2D (HitBox)" type="Area2D" parent="."]
+[node name="Area2D (HitBox)" type="Area2D" parent="." node_paths=PackedStringArray("sprite")]
 visible = false
 collision_layer = 4
 collision_mask = 16
 script = ExtResource("7_7mrng")
+full_health_color = Color(0.607843, 0.741176, 0.384314, 1)
+less_health_color = Color(0.741176, 0.384314, 0.384314, 1)
+health = 250.0
+sprite = NodePath("../AnimatedSprite2D")
 
 [node name="CollisionShape2D (Hit Box)" type="CollisionShape2D" parent="Area2D (HitBox)"]
 position = Vector2(0, -24)
 shape = SubResource("CapsuleShape2D_qtsib")
 
-[node name="Node2D (Controller)" type="Node2D" parent="." node_paths=PackedStringArray("movement", "navigation", "equipment", "aim_detector", "weapon_detector")]
+[node name="Node2D (Controller)" type="Node2D" parent="." node_paths=PackedStringArray("movement", "health", "navigation", "equipment", "aim_detector", "weapon_detector")]
 script = ExtResource("7_f0d4w")
 movement = NodePath("..")
+health = NodePath("../Area2D (HitBox)")
 navigation = NodePath("../NavigationAgent2D")
 equipment = NodePath("../Node2D (Equipment)")
 aim_detector = NodePath("../Area2D (Aim Detector)")
