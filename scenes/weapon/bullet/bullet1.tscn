@@ -15,10 +15,12 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.8, 0.2)
 
-[node name="Sprite2D (Bullet)" type="Sprite2D"]
+[node name="Bullet" type="Node2D"]
 y_sort_enabled = true
-texture = ExtResource("1_4hxwj")
 script = ExtResource("2_cwty5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_4hxwj")
 
 [node name="Area2D (Collider)" type="Area2D" parent="."]
 collision_layer = 16

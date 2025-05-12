@@ -1,21 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://b33drci8du64q"]
+[gd_scene load_steps=5 format=3 uid="uid://b33drci8du64q"]
 
 [ext_resource type="Texture2D" uid="uid://bbhto01k2173p" path="res://assets/weapon/shotgun/shotgun.png" id="1_m25pm"]
 [ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon.gd" id="2_yy7hw"]
 [ext_resource type="PackedScene" uid="uid://dftkr7xbimjpf" path="res://scenes/weapon/bullet/bullet3.tscn" id="3_m25pm"]
-[ext_resource type="Texture2D" uid="uid://ckfo4lopidfcs" path="res://assets/weapon/muzzle/muzzle3.png" id="4_yy7hw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
 size = Vector2(32, 11.5)
 
-[node name="Sprite2D (Shotgun)" type="Sprite2D"]
+[node name="Weapon (Shotgun)" type="Sprite2D"]
 texture = ExtResource("1_m25pm")
 script = ExtResource("2_yy7hw")
 fire_rate = 0.5
-bullet_scene = ExtResource("3_m25pm")
-bullet_spread_degrees_range = Vector2(-30, 30)
 bullets_per_shot_range = Vector2i(5, 7)
-bullet_max_distance_range = Vector2(100, 200)
+spread_range = Vector2(-30, 30)
+bullet_scene = ExtResource("3_m25pm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_m25pm")
 
 [node name="Area2D (Pickup)" type="Area2D" parent="."]
 collision_layer = 8
@@ -30,13 +31,4 @@ z_index = 1
 y_sort_enabled = true
 position = Vector2(28, -2)
 
-[node name="Sprite2D (Muzzle)" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(16.5, -2)
-texture = ExtResource("4_yy7hw")
-
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-
-[node name="Timer" type="Timer" parent="."]
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

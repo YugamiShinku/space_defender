@@ -1,41 +1,11 @@
 class_name ActorDetector extends Area2D
 
-@export var ray_cast: RayCast2D
+@export_flags_2d_physics var ray_cast_collision_mask: int = 1
 @export var area_exceptions: Array[Area2D] = []
 @export var body_exceptions: Array[CollisionObject2D] = []
 
+var _ray_cast: RayCast2D
 var _targets: Array[Node2D] = []
-
-func _ready() -> void:
-	for body in body_exceptions:
-		ray_cast.add_exception(body)
-
-func _process(delta: float) -> void:
-	for target in get_targets():
-		if target == get_nearest_target():
-			if target.has_method("set_detected"):
-				target.set_detected(true)
-		else:
-			if target.has_method("set_detected"):
-				target.set_detected(false)		
-
-func _is_target_acceptable(target: Node2D) -> bool:
-	ray_cast.target_position = ray_cast.to_local(target.global_position)
-	ray_cast.force_raycast_update()
-	return !ray_cast.is_colliding()	
-
-func _on_area_entered(area: Area2D) -> void:
-	if area in area_exceptions: return
-	_targets.append(area.get_parent())
-
-func _on_area_exited(area: Area2D) -> void:
-	_targets.erase(area.get_parent())
-
-func _on_body_entered(body: Node2D) -> void:
-	_targets.append(body)
-
-func _on_body_exited(body: Node2D) -> void:
-	_targets.erase(body)
 	
 func get_targets() -> Array[Node2D]:
 	return _targets.filter(_is_target_acceptable)
@@ -50,3 +20,30 @@ func get_nearest_target() -> Node2D:
 			min_distance = distance
 			nearest_target = target
 	return nearest_target
+
+func _ready() -> void:
+	_ray_cast = RayCast2D.new()
+	_ray_cast.collision_mask = ray_cast_collision_mask
+	_ray_cast.target_position = Vector2.ZERO
+	_ray_cast.collide_with_areas = true
+	for body in body_exceptions:
+		_ray_cast.add_exception(body)
+	add_child(_ray_cast)	
+
+func _is_target_acceptable(target: Node2D) -> bool:
+	_ray_cast.target_position = _ray_cast.to_local(target.global_position)
+	_ray_cast.force_raycast_update()
+	return !_ray_cast.is_colliding()	
+
+func _on_area_entered(area: Area2D) -> void:
+	if area in area_exceptions: return
+	_targets.append(area.get_parent())
+
+func _on_area_exited(area: Area2D) -> void:
+	_targets.erase(area.get_parent())
+
+func _on_body_entered(body: Node2D) -> void:
+	_targets.append(body)
+
+func _on_body_exited(body: Node2D) -> void:
+	_targets.erase(body)

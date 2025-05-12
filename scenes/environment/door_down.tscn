@@ -268,7 +268,7 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_jbk66"]
 radius = 100.0
 
-[node name="Node2D (Door)" type="Node2D" node_paths=PackedStringArray("detector", "animation_player")]
+[node name="Door" type="Node2D" node_paths=PackedStringArray("detector", "animation_player")]
 y_sort_enabled = true
 script = ExtResource("1_vl1jj")
 detector = NodePath("Area2D (Detector)")
@@ -379,13 +379,6 @@ position = Vector2(0, -2)
 
 [node name="CollisionPolygon2D (Right Column Collider)" type="CollisionPolygon2D" parent="Node2D (Right Column)/StaticBody2D (Right Column Colider)"]
 polygon = PackedVector2Array(0, 3, -8, -1, 0, -5, 8, -1)
-
-[node name="TextureRect" type="TextureRect" parent="."]
-clip_children = 1
-offset_left = -24.0
-offset_top = -55.0
-offset_right = 16.0
-offset_bottom = -15.0
 
 [node name="ColorRect" type="ColorRect" parent="."]
 clip_children = 1
@@ -574,12 +567,11 @@ libraries = {
 visible = false
 target_position = Vector2(0, 0)
 
-[node name="Area2D (Detector)" type="Area2D" parent="." node_paths=PackedStringArray("ray_cast", "body_exceptions")]
+[node name="Area2D (Detector)" type="Area2D" parent="." node_paths=PackedStringArray("body_exceptions")]
 visible = false
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("2_8q40y")
-ray_cast = NodePath("../RayCast2D (Detector)")
 body_exceptions = [NodePath("../ColorRect/Node2D (Y Sort Wrapper)/Node2D (Left Door)/StaticBody2D (Left Door Collider)"), NodePath("../ColorRect/Node2D (Y Sort Wrapper)/Node2D (Right Door)/StaticBody2D (Right Door Collider)"), NodePath("../Node2D (Left Column)/StaticBody2D (Left Column Colider)"), NodePath("../Node2D (Right Column)/StaticBody2D (Right Column Colider)")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Detector)"]

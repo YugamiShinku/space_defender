@@ -15,9 +15,11 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.8, 0.2)
 
-[node name="Sprite2D (Bullet)" type="Sprite2D"]
-texture = ExtResource("1_2hqcs")
+[node name="Sprite2D (Bullet)" type="Node2D"]
 script = ExtResource("2_qglpg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_2hqcs")
 
 [node name="Area2D (Collider)" type="Area2D" parent="."]
 collision_layer = 16
