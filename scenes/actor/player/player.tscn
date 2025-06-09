@@ -1,6 +1,6 @@
-[gd_scene load_steps=38 format=3 uid="uid://cwag33x4rk4mh"]
+[gd_scene load_steps=40 format=3 uid="uid://cwag33x4rk4mh"]
 
-[ext_resource type="Script" uid="uid://ct14n3pajnjc6" path="res://scripts/actor/player/player_controller.gd" id="1_45651"]
+[ext_resource type="Script" uid="uid://ct14n3pajnjc6" path="res://scripts/actor/player_controller.gd" id="1_45651"]
 [ext_resource type="Script" uid="uid://pgm1sd3syd54" path="res://scripts/actor/actor_movement.gd" id="1_itu6y"]
 [ext_resource type="Texture2D" uid="uid://vigl3dpj8e55" path="res://assets/actor/player/player.png" id="2_insbl"]
 [ext_resource type="Shader" uid="uid://bvcrnn712n8xl" path="res://shaders/blink.tres" id="2_r3jy3"]
@@ -11,15 +11,14 @@
 [ext_resource type="Script" uid="uid://dgji7k80x8k3b" path="res://scripts/actor/actor_equipment.gd" id="7_itu6y"]
 [ext_resource type="Script" uid="uid://dylxwbngibnom" path="res://scripts/actor/actor_aimer.gd" id="10_r3jy3"]
 [ext_resource type="Script" uid="uid://dv2cdp1ks5cjq" path="res://scripts/actor/actor_effector.gd" id="11_x0gpd"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_insbl"]
-height = 46.0
+[ext_resource type="Script" uid="uid://bovrtd83imkic" path="res://scripts/actor/actor_shake.gd" id="12_da11b"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mfkd"]
 radius = 7.0
 height = 22.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r3jy3"]
+resource_local_to_scene = true
 shader = ExtResource("2_r3jy3")
 shader_parameter/blink_color = Color(1, 1, 1, 1)
 shader_parameter/blink_intensity = 0.0
@@ -134,6 +133,10 @@ animations = [{
 "name": &"walk_top_right",
 "speed": 5.0
 }]
+
+[sub_resource type="Animation" id="Animation_da3jf"]
+length = 0.1
+loop_mode = 1
 
 [sub_resource type="Animation" id="Animation_385dm"]
 length = 0.2
@@ -389,6 +392,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_da11b"]
 _data = {
+&"default": SubResource("Animation_da3jf"),
 &"idle_front": SubResource("Animation_385dm"),
 &"walk_down": SubResource("Animation_fruo1"),
 &"walk_down_left": SubResource("Animation_rwg1c"),
@@ -404,36 +408,29 @@ _data = {
 radius = 50.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_385dm"]
-radius = 150.0
+radius = 300.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_insbl"]
+height = 46.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_egpl5"]
 polygon = PackedVector2Array(-10, -13, 10, -13, 10, -1, -10, -1)
 
-[node name="Player Controller" type="CharacterBody2D"]
+[node name="Player Controller" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("1_45651")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-limit_smoothed = true
 position_smoothing_enabled = true
-position_smoothing_speed = 7.5
+rotation_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 drag_left_margin = 0.05
 drag_top_margin = 0.05
 drag_right_margin = 0.05
 drag_bottom_margin = 0.05
-
-[node name="Area2D (Hit Box)" type="Area2D" parent="."]
-visible = false
-collision_layer = 4
-collision_mask = 16
-
-[node name="CollisionShape2D (Hit Box)" type="CollisionShape2D" parent="Area2D (Hit Box)"]
-position = Vector2(0, -24)
-shape = SubResource("CapsuleShape2D_insbl")
 
 [node name="CollisionShape2D (Collider)" type="CollisionShape2D" parent="."]
 visible = false
@@ -465,6 +462,7 @@ parameters/walk/blend_position = Vector2(0, 0)
 script = ExtResource("4_rwg1c")
 
 [node name="Marker2D (Pickup Weapon)" type="Marker2D" parent="."]
+z_index = 1
 position = Vector2(0, -24)
 gizmo_extents = 8.0
 
@@ -472,6 +470,7 @@ gizmo_extents = 8.0
 gizmo_extents = 8.0
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true
 
 [node name="Weapon Detector" type="Area2D" parent="."]
 visible = false
@@ -484,17 +483,29 @@ script = ExtResource("6_45651")
 [node name="CollisionShape2D (Weapon Detector)" type="CollisionShape2D" parent="Weapon Detector"]
 shape = SubResource("CircleShape2D_gw8h6")
 
-[node name="Aim Detector" type="Area2D" parent="." node_paths=PackedStringArray("area_exceptions")]
+[node name="Aim Detector" type="Area2D" parent="."]
 visible = false
 position = Vector2(0, -24)
 collision_layer = 0
 collision_mask = 4
 monitorable = false
 script = ExtResource("6_45651")
-area_exceptions = [NodePath("../Area2D (Hit Box)")]
+group_exceptions = Array[StringName]([&"Player"])
 
 [node name="CollisionShape2D (Aim Detector)" type="CollisionShape2D" parent="Aim Detector"]
 shape = SubResource("CircleShape2D_385dm")
+
+[node name="ActorHealth" type="Area2D" parent="." groups=["Player"]]
+visible = false
+collision_layer = 4
+collision_mask = 16
+script = ExtResource("6_egpl5")
+_health_max = 1000.0
+metadata/_custom_type_script = "uid://ltvf8d8y81xv"
+
+[node name="CollisionShape2D (Hit Box)" type="CollisionShape2D" parent="ActorHealth"]
+position = Vector2(0, -24)
+shape = SubResource("CapsuleShape2D_insbl")
 
 [node name="ActorMovement" type="Node2D" parent="." node_paths=PackedStringArray("character_body")]
 script = ExtResource("1_itu6y")
@@ -502,19 +513,16 @@ character_body = NodePath("..")
 speed = 200.0
 metadata/_custom_type_script = "uid://pgm1sd3syd54"
 
-[node name="ActorHealth" type="Node2D" parent="."]
-script = ExtResource("6_egpl5")
-metadata/_custom_type_script = "uid://ltvf8d8y81xv"
-
 [node name="ActorEquipment" type="Node2D" parent="." node_paths=PackedStringArray("pickup_marker", "drop_marker")]
 script = ExtResource("7_itu6y")
 pickup_marker = NodePath("../Marker2D (Pickup Weapon)")
 drop_marker = NodePath("../Marker2D (Drop Weapon)")
 metadata/_custom_type_script = "uid://dgji7k80x8k3b"
 
-[node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotating")]
+[node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotatable")]
 script = ExtResource("10_r3jy3")
-rotating = NodePath("../Marker2D (Pickup Weapon)")
+rotatable = NodePath("../Marker2D (Pickup Weapon)")
+rotation_speed = 10.0
 metadata/_custom_type_script = "uid://dylxwbngibnom"
 
 [node name="ActorEffector" type="Node2D" parent="." node_paths=PackedStringArray("effectable")]
@@ -522,10 +530,14 @@ script = ExtResource("11_x0gpd")
 effectable = NodePath("../AnimatedSprite2D")
 metadata/_custom_type_script = "uid://dv2cdp1ks5cjq"
 
+[node name="ActorShake" type="Node2D" parent="." node_paths=PackedStringArray("shakable")]
+script = ExtResource("12_da11b")
+shakable = NodePath("../Camera2D")
+metadata/_custom_type_script = "uid://bovrtd83imkic"
+
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_egpl5")
 
-[connection signal="area_entered" from="Area2D (Hit Box)" to="." method="_on_area_2d_hit_box_area_entered"]
 [connection signal="area_entered" from="Weapon Detector" to="Weapon Detector" method="_on_area_entered"]
 [connection signal="area_exited" from="Weapon Detector" to="Weapon Detector" method="_on_area_exited"]
 [connection signal="body_entered" from="Weapon Detector" to="Weapon Detector" method="_on_body_entered"]
@@ -534,3 +546,5 @@ occluder = SubResource("OccluderPolygon2D_egpl5")
 [connection signal="area_exited" from="Aim Detector" to="Aim Detector" method="_on_area_exited"]
 [connection signal="body_entered" from="Aim Detector" to="Aim Detector" method="_on_body_entered"]
 [connection signal="body_exited" from="Aim Detector" to="Aim Detector" method="_on_body_exited"]
+[connection signal="after_take_damage" from="ActorHealth" to="." method="_on_actor_health_after_take_damage"]
+[connection signal="area_entered" from="ActorHealth" to="ActorHealth" method="_on_area_entered"]

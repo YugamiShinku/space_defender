@@ -1,1 +1,0 @@
-class_name ArmoryCompartment extends Compartment

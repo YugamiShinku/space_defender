@@ -1,6 +1,6 @@
 class_name ActorAnimator extends AnimationTree
 
-var movement_blend_position: Vector2
+var movement_blend_position := Vector2.ZERO
 
 func _process(_delta: float) -> void:
 	if movement_blend_position.length() > 0:

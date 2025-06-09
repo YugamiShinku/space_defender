@@ -1,6 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://blqafrdnm7xks"]
+[gd_scene load_steps=18 format=3 uid="uid://blqafrdnm7xks"]
 
-[ext_resource type="Texture2D" uid="uid://cvqaq7ovwc8g4" path="res://assets/ui/pause_32px.png" id="1_5s0hc"]
+[ext_resource type="Script" uid="uid://io1di72dk4qn" path="res://scripts/ui/game_menu.gd" id="1_3rbob"]
+[ext_resource type="Script" uid="uid://c38xjeb4ndo2" path="res://scripts/ui/virtual_joystick.gd" id="1_5s0hc"]
+[ext_resource type="Texture2D" uid="uid://o1j4otby56wi" path="res://assets/ui/progressbar_background.png" id="2_6ci2i"]
+[ext_resource type="Texture2D" uid="uid://85nhl58g2m5f" path="res://assets/ui/heart.png" id="2_nrj1f"]
+[ext_resource type="Texture2D" uid="uid://d32qc13vnl3ei" path="res://assets/ui/joystick_border.png" id="2_vtvlb"]
+[ext_resource type="Texture2D" uid="uid://c1po35do27lm7" path="res://assets/ui/progressbar.png" id="3_idx1i"]
+[ext_resource type="Texture2D" uid="uid://big7f8edtts7i" path="res://assets/ui/joystick_stick.png" id="3_vtvlb"]
+[ext_resource type="Texture2D" uid="uid://dqmk6g8x4p3dn" path="res://assets/ui/joystick_stick_pressed.png" id="4_vtvlb"]
+[ext_resource type="Texture2D" uid="uid://dj8fxpovtau06" path="res://assets/ui/shoot.png" id="8_ah5xx"]
+[ext_resource type="Texture2D" uid="uid://bfpacoul7xh6n" path="res://assets/ui/pause_pressed.png" id="9_to44m"]
+[ext_resource type="Texture2D" uid="uid://c52p5gw5eme2x" path="res://assets/ui/skill.png" id="10_nrj1f"]
+[ext_resource type="Texture2D" uid="uid://br5ck65tko8i0" path="res://assets/ui/switch.png" id="10_to44m"]
+[ext_resource type="Texture2D" uid="uid://vxtjl8ybx1ay" path="res://assets/ui/shoot_pressed.png" id="11_6ci2i"]
+[ext_resource type="Texture2D" uid="uid://bt4d4vlv0it8s" path="res://assets/ui/pause.png" id="11_idx1i"]
+[ext_resource type="Texture2D" uid="uid://by4m66dxvk0up" path="res://assets/ui/switch_pressed.png" id="13_idx1i"]
+[ext_resource type="Texture2D" uid="uid://ceu1pf3ietoh1" path="res://assets/ui/shield.png" id="14_idx1i"]
+[ext_resource type="Texture2D" uid="uid://hq14d2tb1ckm" path="res://assets/ui/skill_pressed.png" id="15_pvm57"]
 
 [node name="GameMenu" type="Control"]
 layout_mode = 3
@@ -9,12 +25,66 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_3rbob")
 
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 504.0
-offset_top = 1.0
-offset_right = 640.0
-offset_bottom = 73.0
-icon = ExtResource("1_5s0hc")
-flat = true
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureProgressBar (Health)" type="TextureProgressBar" parent="CanvasLayer"]
+custom_minimum_size = Vector2(128, 0)
+offset_left = 35.0
+offset_top = 16.0
+offset_right = 211.0
+offset_bottom = 34.0
+value = 50.0
+texture_under = ExtResource("2_6ci2i")
+texture_progress = ExtResource("3_idx1i")
+
+[node name="TextureProgressBar (Protection)" type="TextureProgressBar" parent="CanvasLayer"]
+offset_left = 35.0
+offset_top = 40.0
+offset_right = 211.0
+offset_bottom = 58.0
+value = 50.0
+texture_under = ExtResource("2_6ci2i")
+texture_progress = ExtResource("3_idx1i")
+
+[node name="VirtualJoystick" type="Node2D" parent="CanvasLayer"]
+position = Vector2(64, 296)
+script = ExtResource("1_5s0hc")
+border = ExtResource("2_vtvlb")
+stick = ExtResource("3_vtvlb")
+stick_pressed = ExtResource("4_vtvlb")
+
+[node name="TouchScreenButton (Pause)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(582, 16)
+texture_normal = ExtResource("11_idx1i")
+texture_pressed = ExtResource("9_to44m")
+
+[node name="TouchScreenButton (Shoot)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(560, 280)
+texture_normal = ExtResource("8_ah5xx")
+texture_pressed = ExtResource("11_6ci2i")
+action = "shoot"
+
+[node name="TouchScreenButton (Switch)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(582, 222)
+texture_normal = ExtResource("10_to44m")
+texture_pressed = ExtResource("13_idx1i")
+action = "equip"
+
+[node name="TouchScreenButton (Skill)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(502, 302)
+texture_normal = ExtResource("10_nrj1f")
+texture_pressed = ExtResource("15_pvm57")
+action = "ability"
+
+[node name="Heart" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(24, 25)
+texture = ExtResource("2_nrj1f")
+
+[node name="Shield" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(24, 49)
+texture = ExtResource("14_idx1i")
+
+[connection signal="analogic_change" from="CanvasLayer/VirtualJoystick" to="CanvasLayer/VirtualJoystick" method="_on_analogic_change"]
+[connection signal="released" from="CanvasLayer/TouchScreenButton (Pause)" to="." method="_on_touch_screen_button_pause_released"]

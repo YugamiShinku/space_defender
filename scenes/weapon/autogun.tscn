@@ -1,8 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://csk54rbc5onda"]
+[gd_scene load_steps=7 format=3 uid="uid://csk54rbc5onda"]
 
-[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon.gd" id="1_ersj5"]
+[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/gun.gd" id="1_ersj5"]
 [ext_resource type="PackedScene" uid="uid://86gukhbcc4xq" path="res://scenes/weapon/bullet/bullet2.tscn" id="2_wmbu3"]
-[ext_resource type="Texture2D" uid="uid://ducolv6rwbs4w" path="res://assets/weapon/autogun/autogun.png" id="3_ly1a2"]
+[ext_resource type="Texture2D" uid="uid://ducolv6rwbs4w" path="res://assets/weapon/autogun.png" id="3_ly1a2"]
+[ext_resource type="Shader" uid="uid://s57jlne0bimo" path="res://shaders/outline_blink.tres" id="3_wmbu3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ly1a2"]
+resource_local_to_scene = true
+shader = ExtResource("3_wmbu3")
+shader_parameter/outline_color = Color(1, 0.52, 0.52, 1)
+shader_parameter/blink_color = Color(0, 0, 0, 1)
+shader_parameter/blink_intensity = 0.0
+shader_parameter/outline_thickness = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
 size = Vector2(32, 11.5)
@@ -13,9 +22,11 @@ reload_time = 1.25
 bullet_scene = ExtResource("2_wmbu3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ly1a2")
 texture = ExtResource("3_ly1a2")
 
 [node name="Area2D (Pickup)" type="Area2D" parent="."]
+visible = false
 collision_layer = 8
 collision_mask = 0
 monitoring = false

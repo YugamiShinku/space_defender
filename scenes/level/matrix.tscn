@@ -1,0 +1,107 @@
+[gd_scene load_steps=18 format=3 uid="uid://bdf8lrfvpdl88"]
+
+[ext_resource type="Script" uid="uid://07p7kkqw3lnx" path="res://scripts/director.gd" id="1_5bliq"]
+[ext_resource type="PackedScene" uid="uid://ko75b6ivteet" path="res://scenes/ui/main_menu.tscn" id="2_0mfbu"]
+[ext_resource type="PackedScene" uid="uid://blqafrdnm7xks" path="res://scenes/ui/game_menu.tscn" id="2_pcbbl"]
+[ext_resource type="PackedScene" uid="uid://b854ho4dn6cdm" path="res://scenes/ui/pause_menu.tscn" id="3_0mfbu"]
+[ext_resource type="PackedScene" uid="uid://bea5pe1oljiw5" path="res://scenes/ui/settings_menu.tscn" id="4_uonyc"]
+[ext_resource type="Script" uid="uid://dyogwbtibuiac" path="res://scripts/utils/tilemap_generator.gd" id="5_6jjd3"]
+[ext_resource type="TileSet" uid="uid://cmaa4g43cbrhn" path="res://tilesets/floor_tileset.tres" id="6_3a53q"]
+[ext_resource type="PackedScene" uid="uid://cerlyt0oaaxfa" path="res://scenes/ui/quit_menu.tscn" id="6_pcbbl"]
+[ext_resource type="PackedScene" uid="uid://cwag33x4rk4mh" path="res://scenes/actor/player/player.tscn" id="7_4kamm"]
+[ext_resource type="Script" uid="uid://u35cx46ff4i2" path="res://scripts/utils/tilemap_spawner.gd" id="8_1a5x7"]
+[ext_resource type="PackedScene" uid="uid://bp0ocsulst6fr" path="res://scenes/actor/enemy/enemy.tscn" id="9_o34t1"]
+[ext_resource type="PackedScene" uid="uid://csk54rbc5onda" path="res://scenes/weapon/autogun.tscn" id="10_2w7b4"]
+[ext_resource type="PackedScene" uid="uid://crq8j7te7os34" path="res://scenes/weapon/rifle.tscn" id="11_vdnif"]
+[ext_resource type="PackedScene" uid="uid://b33drci8du64q" path="res://scenes/weapon/shotgun.tscn" id="12_6sbh7"]
+[ext_resource type="PackedScene" uid="uid://bmx4lpefqi63i" path="res://scenes/abelisk.tscn" id="15_0mfbu"]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_0mfbu"]
+resource_name = "abelisk"
+scenes/1/scene = ExtResource("15_0mfbu")
+
+[sub_resource type="TileSet" id="TileSet_0pk08"]
+tile_shape = 1
+tile_size = Vector2i(48, 24)
+uv_clipping = true
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
+navigation_layer_0/layers = 1
+sources/0 = SubResource("TileSetScenesCollectionSource_0mfbu")
+
+[node name="Matrix" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_5bliq")
+
+[node name="MainMenu" parent="." node_paths=PackedStringArray("game_menu", "settings_menu", "quit_menu") instance=ExtResource("2_0mfbu")]
+game_menu = NodePath("../GameMenu")
+settings_menu = NodePath("../SettingsMenu")
+quit_menu = NodePath("../QuitMenu")
+
+[node name="GameMenu" parent="." node_paths=PackedStringArray("pause_menu", "player_controller") instance=ExtResource("2_pcbbl")]
+pause_menu = NodePath("../PauseMenu")
+player_controller = NodePath("../Player Controller")
+
+[node name="PauseMenu" parent="." node_paths=PackedStringArray("game_menu", "settings_menu", "quit_menu") instance=ExtResource("3_0mfbu")]
+game_menu = NodePath("../GameMenu")
+settings_menu = NodePath("../SettingsMenu")
+quit_menu = NodePath("../QuitMenu")
+
+[node name="SettingsMenu" parent="." instance=ExtResource("4_uonyc")]
+
+[node name="QuitMenu" parent="." instance=ExtResource("6_pcbbl")]
+
+[node name="Tilemap Generator" type="Node2D" parent="." node_paths=PackedStringArray("layers")]
+self_modulate = Color(1, 1, 1, 0)
+y_sort_enabled = true
+script = ExtResource("5_6jjd3")
+tiles = Dictionary[String, Vector2i]({
+"floor": Vector2i(0, 0),
+"obstacle": Vector2i(1, 0),
+"wall": Vector2i(2, 0)
+})
+layers = {
+"floor": NodePath("Floor"),
+"obstacle": NodePath("Floor"),
+"wall": NodePath("Floor")
+}
+min_room_size_range = Vector2i(16, 16)
+max_room_size_range = Vector2i(20, 20)
+
+[node name="Floor" type="TileMapLayer" parent="Tilemap Generator"]
+y_sort_enabled = true
+tile_set = ExtResource("6_3a53q")
+
+[node name="Obstacles" type="TileMapLayer" parent="Tilemap Generator"]
+z_as_relative = false
+y_sort_enabled = true
+tile_map_data = PackedByteArray(0, 0, 247, 255, 239, 255, 2, 0, 0, 0, 0, 0, 1, 0, 7, 0, 15, 0, 2, 0, 0, 0, 0, 0, 1, 0, 253, 255, 248, 255, 2, 0, 0, 0, 0, 0, 2, 0)
+tile_set = SubResource("TileSet_0pk08")
+
+[node name="Player Controller" parent="." instance=ExtResource("7_4kamm")]
+
+[node name="Tilemap Spawner" type="Node2D" parent="."]
+script = ExtResource("8_1a5x7")
+spawn_scenes = Dictionary[String, PackedScene]({
+"enemy": ExtResource("9_o34t1")
+})
+spawn_equipment = Dictionary[String, Array]({
+"enemy": [ExtResource("10_2w7b4"), ExtResource("11_vdnif"), ExtResource("12_6sbh7")]
+})
+spawn_probabilities = Dictionary[String, float]({
+"enemy": 1.0
+})
+metadata/_custom_type_script = "uid://u35cx46ff4i2"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+bus = &"Music"
+
+[node name="Weapon (Shotgun)" parent="." instance=ExtResource("12_6sbh7")]
+position = Vector2(-21, -13)
+
+[node name="Weapon (Rifle)" parent="." instance=ExtResource("11_vdnif")]
+position = Vector2(-49, -34)
+
+[node name="Weapon (Autogun)" parent="." instance=ExtResource("10_2w7b4")]
+position = Vector2(-17, -54)

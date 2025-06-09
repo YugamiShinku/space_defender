@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://86gukhbcc4xq"]
 
-[ext_resource type="Texture2D" uid="uid://dnjr37mpmkkhd" path="res://assets/weapon/bullet/bullet2.png" id="1_jf4kx"]
-[ext_resource type="Script" uid="uid://bu1i5wfbku855" path="res://scripts/weapon/bullet/bullet.gd" id="2_hsncw"]
+[ext_resource type="Script" uid="uid://bu1i5wfbku855" path="res://scripts/weapon/bullet.gd" id="2_hsncw"]
+[ext_resource type="Texture2D" uid="uid://bsuiml0fmriqe" path="res://assets/weapon/bullet/bullet3.png" id="2_nuxjy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4hxwj"]
 size = Vector2(7, 5)
@@ -17,9 +17,10 @@ fill_to = Vector2(0.8, 0.2)
 
 [node name="Bullet" type="Node2D"]
 script = ExtResource("2_hsncw")
+damage = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_jf4kx")
+texture = ExtResource("2_nuxjy")
 
 [node name="Area2D (Collider)" type="Area2D" parent="."]
 collision_layer = 16

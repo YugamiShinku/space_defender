@@ -1,53 +1,48 @@
-[gd_scene load_steps=5 format=3 uid="uid://ko75b6ivteet"]
+[gd_scene load_steps=9 format=3 uid="uid://ko75b6ivteet"]
 
-[ext_resource type="Script" uid="uid://b837pliux6da2" path="res://scripts/ui/menu_menu.gd" id="1_ekxnf"]
-[ext_resource type="PackedScene" uid="uid://b0ov254jlh2xs" path="res://scenes/ui/hub.tscn" id="2_1g8jr"]
-[ext_resource type="PackedScene" uid="uid://df3hym6pwk5ul" path="res://scenes/ui/parallax_background.tscn" id="2_bqqt6"]
-[ext_resource type="Texture2D" uid="uid://cvqaq7ovwc8g4" path="res://assets/ui/pause_32px.png" id="3_m1kxf"]
+[ext_resource type="Script" uid="uid://b837pliux6da2" path="res://scripts/ui/main_menu.gd" id="1_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://xprkfcm08dl6" path="res://assets/ui/play.png" id="3_m1kxf"]
+[ext_resource type="Texture2D" uid="uid://ccuclijdj8l42" path="res://assets/ui/play_pressed.png" id="4_btxxm"]
+[ext_resource type="Texture2D" uid="uid://dgn3n1jnm5xqb" path="res://assets/ui/settings_full.png" id="4_uhagc"]
+[ext_resource type="Texture2D" uid="uid://c0ctcl0y4eakc" path="res://assets/ui/quit_full.png" id="4_x2yvf"]
+[ext_resource type="Texture2D" uid="uid://dq822ur4w4ver" path="res://assets/ui/settings_full_pressed.png" id="6_btxxm"]
+[ext_resource type="Texture2D" uid="uid://cvsmtd3r2jtje" path="res://assets/ui/logo.png" id="8_q85j6"]
+[ext_resource type="Texture2D" uid="uid://cl0xkc64wcko2" path="res://assets/ui/quit_full_pressed.png" id="8_wb0q5"]
 
-[node name="main_menu" type="Node2D"]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("audio_stream")]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_ekxnf")
-hub_scene = ExtResource("2_1g8jr")
+audio_stream = NodePath("AudioStreamPlayer2D")
 
-[node name="Button" type="Button" parent="."]
-offset_left = 587.0
-offset_top = -8.0
-offset_right = 659.0
-offset_bottom = 64.0
-icon = ExtResource("3_m1kxf")
-flat = true
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Play" type="Button" parent="."]
-offset_left = 38.0
-offset_top = 449.0
-offset_right = 183.0
-offset_bottom = 503.0
-text = "Play"
-icon = ExtResource("3_m1kxf")
+[node name="TouchScreenButton (Play)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(49, 148)
+texture_normal = ExtResource("3_m1kxf")
+texture_pressed = ExtResource("4_btxxm")
 
-[node name="Quit" type="Button" parent="."]
-offset_left = 38.0
-offset_top = 515.0
-offset_right = 183.0
-offset_bottom = 569.0
-text = "Quit"
+[node name="TouchScreenButton (Settings)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(49, 197)
+texture_normal = ExtResource("4_uhagc")
+texture_pressed = ExtResource("6_btxxm")
 
-[node name="parallax_background" parent="." instance=ExtResource("2_bqqt6")]
+[node name="TouchScreenButton (Quit)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(49, 245)
+texture_normal = ExtResource("4_x2yvf")
+texture_pressed = ExtResource("8_wb0q5")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Logo" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(320, 66)
+texture = ExtResource("8_q85j6")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
 
-[node name="Settings" type="Button" parent="."]
-offset_left = 1095.0
-offset_top = 20.0
-offset_right = 1141.0
-offset_bottom = 66.0
-text = "S"
-
-[connection signal="pressed" from="Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Play)" to="." method="_on_touch_screen_button_play_pressed"]
+[connection signal="released" from="CanvasLayer/TouchScreenButton (Play)" to="." method="_on_touch_screen_button_play_released"]
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Settings)" to="." method="_on_touch_screen_button_settings_pressed"]
+[connection signal="released" from="CanvasLayer/TouchScreenButton (Settings)" to="." method="_on_touch_screen_button_settings_released"]
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Quit)" to="." method="_on_touch_screen_button_quit_pressed"]
+[connection signal="released" from="CanvasLayer/TouchScreenButton (Quit)" to="." method="_on_touch_screen_button_quit_released"]

@@ -1,0 +1,6 @@
+extends Node
+
+var BUTTON_PRESSED := preload("res://audio/button_pressed.mp3")
+var ERROR := preload("res://audio/error.mp3")
+
+var MAIN_MENU_THEME := preload("res://audio/main_menu.mp3")

@@ -8,19 +8,17 @@
 [ext_resource type="Script" uid="uid://cmmcqs0eropda" path="res://scripts/actor/actor_animator.gd" id="4_m21n4"]
 [ext_resource type="Script" uid="uid://b43vtels5n8e2" path="res://scripts/actor/actor_detector.gd" id="5_qtsib"]
 [ext_resource type="Script" uid="uid://ltvf8d8y81xv" path="res://scripts/actor/actor_health.gd" id="7_7mrng"]
-[ext_resource type="Script" uid="uid://cjwopymmastao" path="res://scripts/actor/enemy/enemy_controller.gd" id="7_f0d4w"]
+[ext_resource type="Script" uid="uid://cjwopymmastao" path="res://scripts/actor/enemy_controller.gd" id="7_f0d4w"]
 [ext_resource type="Script" uid="uid://dgji7k80x8k3b" path="res://scripts/actor/actor_equipment.gd" id="8_7mrng"]
 [ext_resource type="Script" uid="uid://dylxwbngibnom" path="res://scripts/actor/actor_aimer.gd" id="11_pmlkf"]
 [ext_resource type="Script" uid="uid://dv2cdp1ks5cjq" path="res://scripts/actor/actor_effector.gd" id="12_1bv4h"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qtsib"]
-height = 46.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mfkd"]
 radius = 6.0
 height = 20.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1bv4h"]
+resource_local_to_scene = true
 shader = ExtResource("3_pmlkf")
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 shader_parameter/blink_color = Color(1, 1, 1, 1)
@@ -409,10 +407,13 @@ radius = 50.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_eathr"]
 radius = 200.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qtsib"]
+height = 46.0
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3wbbh"]
 polygon = PackedVector2Array(-10, -13, 10, -13, 10, -1, -10, -1)
 
-[node name="Enemy Controller" type="CharacterBody2D"]
+[node name="Enemy Controller" type="CharacterBody2D" groups=["Enemy"]]
 y_sort_enabled = true
 collision_layer = 0
 collision_mask = 3
@@ -424,20 +425,8 @@ path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 0.75
 radius = 1000.0
-debug_enabled = true
-debug_use_custom = true
-debug_path_custom_color = Color(0.145098, 0.396078, 0.439216, 1)
 script = ExtResource("2_7mrng")
 detector = NodePath("../Aim Detector")
-
-[node name="Area2D (Hit Box)" type="Area2D" parent="."]
-visible = false
-collision_layer = 4
-collision_mask = 16
-
-[node name="CollisionShape2D (Hit Box)" type="CollisionShape2D" parent="Area2D (Hit Box)"]
-position = Vector2(0, -24)
-shape = SubResource("CapsuleShape2D_qtsib")
 
 [node name="CollisionShape2D (Collider)" type="CollisionShape2D" parent="."]
 visible = false
@@ -447,6 +436,7 @@ shape = SubResource("CapsuleShape2D_4mfkd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 light_mask = 4
+y_sort_enabled = true
 material = SubResource("ShaderMaterial_1bv4h")
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_4mfkd")
@@ -468,6 +458,7 @@ parameters/walk/blend_position = Vector2(0, 0)
 script = ExtResource("4_m21n4")
 
 [node name="Marker2D (Pickup Weapon)" type="Marker2D" parent="."]
+z_index = 1
 position = Vector2(0, -24)
 
 [node name="Marker2D (Drop Weapon)" type="Marker2D" parent="."]
@@ -483,14 +474,14 @@ script = ExtResource("5_qtsib")
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_khmag")
 
-[node name="Aim Detector" type="Area2D" parent="." node_paths=PackedStringArray("area_exceptions")]
+[node name="Aim Detector" type="Area2D" parent="."]
 visible = false
 position = Vector2(0, -24)
 collision_layer = 0
 collision_mask = 4
 monitorable = false
 script = ExtResource("5_qtsib")
-area_exceptions = [NodePath("../Area2D (Hit Box)")]
+group_exceptions = Array[StringName]([&"Enemy"])
 
 [node name="CollisionShape2D (Aim Detector)" type="CollisionShape2D" parent="Aim Detector"]
 shape = SubResource("CircleShape2D_eathr")
@@ -500,9 +491,19 @@ script = ExtResource("1_3wg1p")
 character_body = NodePath("..")
 metadata/_custom_type_script = "uid://pgm1sd3syd54"
 
-[node name="ActorHealth" type="Node2D" parent="."]
+[node name="ActorHealth" type="Area2D" parent="." groups=["Enemy"]]
+visible = false
+collision_layer = 4
+collision_mask = 16
 script = ExtResource("7_7mrng")
+_health_max = 50.0
+protection_restoring = false
+_protection_max = 0.0
 metadata/_custom_type_script = "uid://ltvf8d8y81xv"
+
+[node name="CollisionShape2D (Hit Box)" type="CollisionShape2D" parent="ActorHealth"]
+position = Vector2(0, -24)
+shape = SubResource("CapsuleShape2D_qtsib")
 
 [node name="ActorEquipment" type="Node2D" parent="." node_paths=PackedStringArray("pickup_marker", "drop_marker")]
 script = ExtResource("8_7mrng")
@@ -510,9 +511,9 @@ pickup_marker = NodePath("../Marker2D (Pickup Weapon)")
 drop_marker = NodePath("../Marker2D (Drop Weapon)")
 metadata/_custom_type_script = "uid://dgji7k80x8k3b"
 
-[node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotating")]
+[node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotatable")]
 script = ExtResource("11_pmlkf")
-rotating = NodePath("../Marker2D (Pickup Weapon)")
+rotatable = NodePath("../Marker2D (Pickup Weapon)")
 metadata/_custom_type_script = "uid://dylxwbngibnom"
 
 [node name="ActorEffector" type="Node2D" parent="." node_paths=PackedStringArray("effectable")]
@@ -524,7 +525,6 @@ metadata/_custom_type_script = "uid://dv2cdp1ks5cjq"
 occluder = SubResource("OccluderPolygon2D_3wbbh")
 occluder_light_mask = 3
 
-[connection signal="area_entered" from="Area2D (Hit Box)" to="." method="_on_area_2d_hit_box_area_entered"]
 [connection signal="area_entered" from="Weapon Detector" to="Weapon Detector" method="_on_area_entered"]
 [connection signal="area_exited" from="Weapon Detector" to="Weapon Detector" method="_on_area_exited"]
 [connection signal="body_entered" from="Weapon Detector" to="Weapon Detector" method="_on_body_entered"]
@@ -533,3 +533,4 @@ occluder_light_mask = 3
 [connection signal="area_exited" from="Aim Detector" to="Aim Detector" method="_on_area_exited"]
 [connection signal="body_entered" from="Aim Detector" to="Aim Detector" method="_on_body_entered"]
 [connection signal="body_exited" from="Aim Detector" to="Aim Detector" method="_on_body_exited"]
+[connection signal="after_take_damage" from="ActorHealth" to="." method="_on_actor_health_after_take_damage"]

@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://co2qh65w0ufdq"
+path="res://.godot/imported/shoot.aseprite-5d7f84ddeb73086ea7630afab058e8a5.res"
+
+[deps]
+
+source_file="res://assets/ui/aseprite/shoot.aseprite"
+dest_files=["res://.godot/imported/shoot.aseprite-5d7f84ddeb73086ea7630afab058e8a5.res"]
+
+[params]
+

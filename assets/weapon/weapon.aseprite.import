@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://blu4cjdriil5l"
+path="res://.godot/imported/weapon.aseprite-7b9732399b1490cd49353dddc8c30e72.res"
+
+[deps]
+
+source_file="res://assets/weapon/weapon.aseprite"
+dest_files=["res://.godot/imported/weapon.aseprite-7b9732399b1490cd49353dddc8c30e72.res"]
+
+[params]
+

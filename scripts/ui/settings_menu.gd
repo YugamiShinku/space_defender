@@ -1,9 +1,29 @@
-extends Control
+class_name SettingsMenu extends Control
 
-@export var main_menu_scene: PackedScene
+@onready var _canvas_layer: CanvasLayer = $"CanvasLayer"
 
-func _on_volume_value_changed(value):
-	AudioServer.set_bus_volume_db(0, value)
+@export var pressed_audio: AudioStreamPlayer2D
 
-func _on_quit_pressed() -> void:
-	get_tree().change_scene_to_packed(main_menu_scene)
+func set_visibility(visible: bool) -> void:
+	_canvas_layer.visible = visible
+
+func switch_visibility() -> void:
+	_canvas_layer.visible = !_canvas_layer.visible
+
+func _on_volume_value_changed(value: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(value))
+
+func _on_music_volume_value_changed(value: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(value))
+
+func _on_effects_volume_value_changed(value: float) -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Effects"), linear_to_db(value))
+
+func _on_vibration_value_changed(value: float) -> void:
+	Vibration.VIBRATION_STRENGTH = value
+
+func _on_vibration_drag_ended(value_changed: bool) -> void:
+	Input.vibrate_handheld(250 * Vibration.VIBRATION_STRENGTH, Vibration.VIBRATION_STRENGTH)
+
+func _on_master_volume_drag_ended(value_changed: bool) -> void:
+	pressed_audio.play()

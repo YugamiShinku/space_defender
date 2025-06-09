@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://cerlyt0oaaxfa"]
+
+[ext_resource type="Script" uid="uid://ddmx3gkfxx670" path="res://scripts/ui/quit_menu.gd" id="1_2mp63"]
+[ext_resource type="Texture2D" uid="uid://mj0l1ysjb84d" path="res://assets/ui/quit_background.png" id="2_c6bcp"]
+[ext_resource type="Texture2D" uid="uid://ie6q16npmay6" path="res://assets/ui/yes.png" id="3_owo65"]
+[ext_resource type="Texture2D" uid="uid://wdn13ulqntyt" path="res://assets/ui/yes_pressed.png" id="4_owo65"]
+[ext_resource type="Texture2D" uid="uid://mjmq8ihlhw5o" path="res://assets/ui/no.png" id="5_4aygh"]
+[ext_resource type="Texture2D" uid="uid://duy0w6cu7cvaf" path="res://assets/ui/no_pressed.png" id="6_4aygh"]
+
+[node name="QuitMenu" type="Control" node_paths=PackedStringArray("audio_stream")]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2mp63")
+audio_stream = NodePath("AudioStreamPlayer2D")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VolumeBackground" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(308, 192)
+texture = ExtResource("2_c6bcp")
+
+[node name="TouchScreenButton (Yes)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(228, 189)
+texture_normal = ExtResource("3_owo65")
+texture_pressed = ExtResource("4_owo65")
+
+[node name="TouchScreenButton (No)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(317, 189)
+texture_normal = ExtResource("5_4aygh")
+texture_pressed = ExtResource("6_4aygh")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+
+[connection signal="released" from="CanvasLayer/TouchScreenButton (Yes)" to="." method="_on_touch_screen_button_yes_released"]
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton (No)" to="." method="_on_touch_screen_button_no_pressed"]
+[connection signal="released" from="CanvasLayer/TouchScreenButton (No)" to="." method="_on_touch_screen_button_no_released"]

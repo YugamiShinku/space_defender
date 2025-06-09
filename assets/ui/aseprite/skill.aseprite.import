@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://dwvtwbh460nvi"
+path="res://.godot/imported/skill.aseprite-55edfb894c606c5be5bfca1c63555523.res"
+
+[deps]
+
+source_file="res://assets/ui/aseprite/skill.aseprite"
+dest_files=["res://.godot/imported/skill.aseprite-55edfb894c606c5be5bfca1c63555523.res"]
+
+[params]
+

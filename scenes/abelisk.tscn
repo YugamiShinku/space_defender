@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmx4lpefqi63i"]
+
+[ext_resource type="Script" uid="uid://cjd4u8dsn6mbu" path="res://scripts/abelisk.gd" id="1_2fnxo"]
+[ext_resource type="Texture2D" uid="uid://8q13q56q7bme" path="res://assets/obstacles/abelisck.png" id="2_3aolm"]
+
+[node name="Abelisk" type="Node2D" node_paths=PackedStringArray("director")]
+script = ExtResource("1_2fnxo")
+director = NodePath("")
+metadata/_custom_type_script = "uid://cjd4u8dsn6mbu"
+
+[node name="Abelisck" type="Sprite2D" parent="."]
+texture = ExtResource("2_3aolm")
+offset = Vector2(0, -32)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 18
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-24, 5, 0, -5, 24, 5, 0, 15)
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

@@ -3,8 +3,10 @@ class_name ActorDetector extends Area2D
 @export_flags_2d_physics var ray_cast_collision_mask: int = 1
 @export var area_exceptions: Array[Area2D] = []
 @export var body_exceptions: Array[CollisionObject2D] = []
+@export var group_exceptions: Array[StringName] = []
 
-var _ray_cast: RayCast2D
+@onready var _ray_cast := RayCast2D.new()
+
 var _targets: Array[Node2D] = []
 	
 func get_targets() -> Array[Node2D]:
@@ -22,7 +24,6 @@ func get_nearest_target() -> Node2D:
 	return nearest_target
 
 func _ready() -> void:
-	_ray_cast = RayCast2D.new()
 	_ray_cast.collision_mask = ray_cast_collision_mask
 	_ray_cast.target_position = Vector2.ZERO
 	_ray_cast.collide_with_areas = true
@@ -35,14 +36,22 @@ func _is_target_acceptable(target: Node2D) -> bool:
 	_ray_cast.force_raycast_update()
 	return !_ray_cast.is_colliding()	
 
+func _is_area_excepted(area: Area2D) -> bool:
+	return area in area_exceptions
+
+func _is_any_group_excepted(groups: Array[StringName]) -> bool:
+	return groups.any(func(group): return group in group_exceptions)
+
 func _on_area_entered(area: Area2D) -> void:
-	if area in area_exceptions: return
-	_targets.append(area.get_parent())
+	if _is_area_excepted(area): return
+	if _is_any_group_excepted(area.get_groups()): return
+	_targets.append(area)
 
 func _on_area_exited(area: Area2D) -> void:
-	_targets.erase(area.get_parent())
+	_targets.erase(area)
 
 func _on_body_entered(body: Node2D) -> void:
+	if _is_any_group_excepted(body.get_groups()): return
 	_targets.append(body)
 
 func _on_body_exited(body: Node2D) -> void:

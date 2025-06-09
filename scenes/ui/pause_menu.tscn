@@ -1,55 +1,44 @@
-[gd_scene load_steps=3 format=3 uid="uid://b854ho4dn6cdm"]
+[gd_scene load_steps=8 format=3 uid="uid://b854ho4dn6cdm"]
 
 [ext_resource type="Script" uid="uid://bxw81xi1txuag" path="res://scripts/ui/pause_menu.gd" id="1_mnjdh"]
-[ext_resource type="PackedScene" uid="uid://ko75b6ivteet" path="res://scenes/ui/main_menu.tscn" id="2_0lmf7"]
+[ext_resource type="Texture2D" uid="uid://bp6micuamours" path="res://assets/ui/quit.png" id="2_0bnpd"]
+[ext_resource type="Texture2D" uid="uid://n7dyyh0vakud" path="res://assets/ui/settings.png" id="3_0bnpd"]
+[ext_resource type="Texture2D" uid="uid://cqsfeqxq0uu6c" path="res://assets/ui/quit_pressed.png" id="3_4inpj"]
+[ext_resource type="Texture2D" uid="uid://b88aku3ltsj3k" path="res://assets/ui/resume.png" id="4_0bnpd"]
+[ext_resource type="Texture2D" uid="uid://niy1k7hotk8l" path="res://assets/ui/settings_pressed.png" id="5_4inpj"]
+[ext_resource type="Texture2D" uid="uid://botnju5hi05hg" path="res://assets/ui/resume_pressed.png" id="7_8fwbo"]
 
-[node name="PauseMenu" type="Control"]
+[node name="PauseMenu" type="Control" node_paths=PackedStringArray("audio_stream")]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = 2.0
-offset_right = 1.0
-offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mnjdh")
-main_menu_scene = ExtResource("2_0lmf7")
+audio_stream = NodePath("AudioStreamPlayer2D")
 
-[node name="Quit" type="Button" parent="."]
-layout_mode = 0
-offset_left = 366.0
-offset_top = 537.0
-offset_right = 417.0
-offset_bottom = 594.0
-text = "Q"
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Label" type="Label" parent="Quit"]
-layout_mode = 0
-offset_left = 104.0
-offset_top = -280.0
-offset_right = 144.0
-offset_bottom = -257.0
-theme_override_font_sizes/font_size = 50
-text = "Paused"
+[node name="TouchScreenButton (Quit)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(479, 16)
+texture_normal = ExtResource("2_0bnpd")
+texture_pressed = ExtResource("3_4inpj")
 
-[node name="Resume" type="Button" parent="."]
-layout_mode = 0
-offset_left = 455.0
-offset_top = 537.0
-offset_right = 663.0
-offset_bottom = 594.0
-text = "R"
+[node name="TouchScreenButton (Settings)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(531, 16)
+texture_normal = ExtResource("3_0bnpd")
+texture_pressed = ExtResource("5_4inpj")
 
-[node name="Settings" type="Button" parent="."]
-layout_mode = 0
-offset_left = 684.0
-offset_top = 537.0
-offset_right = 735.0
-offset_bottom = 594.0
-text = "S"
+[node name="TouchScreenButton (Resume)" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(582, 16)
+texture_normal = ExtResource("4_0bnpd")
+texture_pressed = ExtResource("7_8fwbo")
 
-[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Quit)" to="." method="_on_touch_screen_button_quit_pressed"]
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Settings)" to="." method="_on_touch_screen_button_settings_pressed"]
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Resume)" to="." method="_on_touch_screen_button_resume_pressed"]
