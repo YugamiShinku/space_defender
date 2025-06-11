@@ -95,7 +95,6 @@ metadata/_custom_type_script = "uid://u35cx46ff4i2"
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 process_mode = 3
-bus = &"Music"
 
 [node name="Weapon (Shotgun)" parent="." instance=ExtResource("12_6sbh7")]
 position = Vector2(-21, -13)
