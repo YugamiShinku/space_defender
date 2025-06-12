@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bp0ocsulst6fr"]
+[gd_scene load_steps=38 format=3 uid="uid://bp0ocsulst6fr"]
 
 [ext_resource type="Script" uid="uid://pgm1sd3syd54" path="res://scripts/actor/actor_movement.gd" id="1_3wg1p"]
 [ext_resource type="Script" uid="uid://hl7kcwp8waw2" path="res://scripts/actor/navigation/target_navigation.gd" id="2_7mrng"]
@@ -410,9 +410,6 @@ radius = 200.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qtsib"]
 height = 46.0
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3wbbh"]
-polygon = PackedVector2Array(-10, -13, 10, -13, 10, -1, -10, -1)
-
 [node name="Enemy Controller" type="CharacterBody2D" groups=["Enemy"]]
 y_sort_enabled = true
 collision_layer = 0
@@ -504,25 +501,23 @@ metadata/_custom_type_script = "uid://ltvf8d8y81xv"
 position = Vector2(0, -24)
 shape = SubResource("CapsuleShape2D_qtsib")
 
-[node name="ActorEquipment" type="Node2D" parent="." node_paths=PackedStringArray("pickup_marker", "drop_marker")]
+[node name="ActorEquipment" type="Node2D" parent="." node_paths=PackedStringArray("pickup_marker_front", "pickup_marker_back", "drop_marker")]
 script = ExtResource("8_7mrng")
-pickup_marker = NodePath("../Marker2D (Pickup Weapon)")
+max_weapons = 1
+pickup_marker_front = NodePath("../Marker2D (Pickup Weapon)")
+pickup_marker_back = NodePath("../Marker2D (Pickup Weapon)")
 drop_marker = NodePath("../Marker2D (Drop Weapon)")
 metadata/_custom_type_script = "uid://dgji7k80x8k3b"
 
-[node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotatable")]
+[node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotatables")]
 script = ExtResource("11_pmlkf")
-rotatable = NodePath("../Marker2D (Pickup Weapon)")
+rotatables = [NodePath("../Marker2D (Pickup Weapon)")]
 metadata/_custom_type_script = "uid://dylxwbngibnom"
 
 [node name="ActorEffector" type="Node2D" parent="." node_paths=PackedStringArray("effectable")]
 script = ExtResource("12_1bv4h")
 effectable = NodePath("../AnimatedSprite2D")
 metadata/_custom_type_script = "uid://dv2cdp1ks5cjq"
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource("OccluderPolygon2D_3wbbh")
-occluder_light_mask = 3
 
 [connection signal="area_entered" from="Weapon Detector" to="Weapon Detector" method="_on_area_entered"]
 [connection signal="area_exited" from="Weapon Detector" to="Weapon Detector" method="_on_area_exited"]

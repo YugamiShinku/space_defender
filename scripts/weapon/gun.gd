@@ -23,7 +23,6 @@ func _ready():
 
 func set_pickable(enabled: bool):
 	pickup_area.monitorable = enabled
-	sprite.material.set_shader_parameter("outline_thickness", 1.0 if enabled else 0.0)
 
 func shoot() -> int:
 	if !_can_shoot || _current_ammo <= 0:

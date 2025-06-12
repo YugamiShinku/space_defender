@@ -77,7 +77,10 @@ metadata/_custom_type_script = "uid://u35cx46ff4i2"
 process_mode = 3
 stream = ExtResource("16_uonyc")
 pitch_scale = 1.25
-parameters/looping = tru
+parameters/looping = true
 
 [node name="Weapon (Shotgun)" parent="." instance=ExtResource("12_6sbh7")]
 position = Vector2(-21, -13)
+
+[node name="Weapon (Autogun)" parent="." instance=ExtResource("10_2w7b4")]
+position = Vector2(-29, -28)

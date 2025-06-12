@@ -34,13 +34,14 @@ func _process(_delta: float) -> void:
 	_setup_aimer_target_position()
 	_setup_animator_state()
 	
-	var current_weapon := equipment.get_current_weapon()
+	var current_weapons := equipment.get_current_weapons()
 	var nearest_weapon := weapon_detector.get_nearest_target()
-	if !current_weapon and nearest_weapon:
+	if current_weapons.is_empty() and nearest_weapon:
 		equipment.pickup_weapon(nearest_weapon.get_parent())
 		
-	if aim_detector.get_nearest_target() && current_weapon:
-		current_weapon.shoot()
+	if aim_detector.get_nearest_target() && !current_weapons.is_empty():
+		for current_weapon in current_weapons:
+			current_weapon.shoot()
 
 func _on_actor_health_after_take_damage(damage: float) -> void:
 	effector.blink_thickness()

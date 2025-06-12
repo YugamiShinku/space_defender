@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://cwag33x4rk4mh"]
+[gd_scene load_steps=40 format=3 uid="uid://cwag33x4rk4mh"]
 
 [ext_resource type="Script" uid="uid://ct14n3pajnjc6" path="res://scripts/actor/player_controller.gd" id="1_45651"]
 [ext_resource type="Script" uid="uid://pgm1sd3syd54" path="res://scripts/actor/actor_movement.gd" id="1_itu6y"]
@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://b43vtels5n8e2" path="res://scripts/actor/actor_detector.gd" id="6_45651"]
 [ext_resource type="Script" uid="uid://ltvf8d8y81xv" path="res://scripts/actor/actor_health.gd" id="6_egpl5"]
 [ext_resource type="Script" uid="uid://dgji7k80x8k3b" path="res://scripts/actor/actor_equipment.gd" id="7_itu6y"]
-[ext_resource type="Script" uid="uid://dg0ual8lc7p1i" path="res://scenes/actor/player/player_ability.gd" id="10_da3jf"]
+[ext_resource type="Script" uid="uid://dg0ual8lc7p1i" path="res://scripts/actor/ability_makedonian.gd" id="10_da3jf"]
 [ext_resource type="Script" uid="uid://dylxwbngibnom" path="res://scripts/actor/actor_aimer.gd" id="10_r3jy3"]
 [ext_resource type="Script" uid="uid://dv2cdp1ks5cjq" path="res://scripts/actor/actor_effector.gd" id="11_x0gpd"]
 [ext_resource type="Script" uid="uid://bovrtd83imkic" path="res://scripts/actor/actor_shake.gd" id="12_da11b"]
@@ -414,9 +414,6 @@ radius = 300.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_insbl"]
 height = 46.0
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_egpl5"]
-polygon = PackedVector2Array(-10, -13, 10, -13, 10, -1, -10, -1)
-
 [node name="Player Controller" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 0
@@ -462,9 +459,13 @@ parameters/idle/blend_position = Vector2(0, 0)
 parameters/walk/blend_position = Vector2(0, 0)
 script = ExtResource("4_rwg1c")
 
-[node name="Marker2D (Pickup Weapon)" type="Marker2D" parent="."]
+[node name="Marker2D (Pickup Weapon Front)" type="Marker2D" parent="."]
 z_index = 1
-position = Vector2(-2, -24)
+position = Vector2(0, -18)
+gizmo_extents = 8.0
+
+[node name="Marker2D (Pickup Weapon Back)" type="Marker2D" parent="."]
+position = Vector2(0, -26)
 gizmo_extents = 8.0
 
 [node name="Marker2D (Drop Weapon)" type="Marker2D" parent="."]
@@ -484,13 +485,15 @@ script = ExtResource("6_45651")
 [node name="CollisionShape2D (Weapon Detector)" type="CollisionShape2D" parent="Weapon Detector"]
 shape = SubResource("CircleShape2D_gw8h6")
 
-[node name="Aim Detector" type="Area2D" parent="."]
+[node name="Aim Detector" type="Area2D" parent="." node_paths=PackedStringArray("area_exceptions", "body_exceptions")]
 visible = false
 position = Vector2(0, -24)
 collision_layer = 0
 collision_mask = 4
 monitorable = false
 script = ExtResource("6_45651")
+area_exceptions = [NodePath("../ActorHealth")]
+body_exceptions = [NodePath("..")]
 group_exceptions = Array[StringName]([&"Player"])
 
 [node name="CollisionShape2D (Aim Detector)" type="CollisionShape2D" parent="Aim Detector"]
@@ -516,22 +519,16 @@ character_body = NodePath("..")
 speed = 200.0
 metadata/_custom_type_script = "uid://pgm1sd3syd54"
 
-[node name="ActorEquipment" type="Node2D" parent="." node_paths=PackedStringArray("pickup_marker", "drop_marker")]
+[node name="ActorEquipment" type="Node2D" parent="." node_paths=PackedStringArray("pickup_marker_front", "pickup_marker_back", "drop_marker")]
 script = ExtResource("7_itu6y")
-pickup_marker = NodePath("../Marker2D (Pickup Weapon)")
+pickup_marker_front = NodePath("../Marker2D (Pickup Weapon Front)")
+pickup_marker_back = NodePath("../Marker2D (Pickup Weapon Back)")
 drop_marker = NodePath("../Marker2D (Drop Weapon)")
 metadata/_custom_type_script = "uid://dgji7k80x8k3b"
 
-[node name="PlayerAbility" type="Node2D" parent="."]
-script = ExtResource("10_da3jf")
-
-[node name="Timer" type="Timer" parent="PlayerAbility"]
-
-[node name="CooldownTimer" type="Timer" parent="PlayerAbility"]
-
-[node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotatable")]
+[node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotatables")]
 script = ExtResource("10_r3jy3")
-rotatable = NodePath("../Marker2D (Pickup Weapon)")
+rotatables = [NodePath("../Marker2D (Pickup Weapon Front)"), NodePath("../Marker2D (Pickup Weapon Back)")]
 rotation_speed = 10.0
 metadata/_custom_type_script = "uid://dylxwbngibnom"
 
@@ -545,8 +542,10 @@ script = ExtResource("12_da11b")
 shakable = NodePath("../Camera2D")
 metadata/_custom_type_script = "uid://bovrtd83imkic"
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource("OccluderPolygon2D_egpl5")
+[node name="ActorAbility" type="Node2D" parent="." node_paths=PackedStringArray("equipment")]
+script = ExtResource("10_da3jf")
+equipment = NodePath("../ActorEquipment")
+metadata/_custom_type_script = "uid://dg0ual8lc7p1i"
 
 [connection signal="area_entered" from="Weapon Detector" to="Weapon Detector" method="_on_area_entered"]
 [connection signal="area_exited" from="Weapon Detector" to="Weapon Detector" method="_on_area_exited"]

@@ -11,14 +11,14 @@ class_name PlayerController extends Node2D
 @onready var camera: Camera2D = $"Camera2D"
 @onready var effector: ActorEffector = $"ActorEffector"
 @onready var camera_shake: ActorShake = $"ActorShake"
-@onready var player_ability: PlayerAbility = $"PlayerAbility"
+@onready var ability: ActorAbility = $"ActorAbility"
 
 func _setup_movement_direction() -> void:
 	movement._direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 
 func _setup_aimer_target_position() -> void:
-	var current_weapon = equipment.get_current_weapon()
-	if current_weapon:
+	var current_weapons = equipment.get_current_weapons()
+	if !current_weapons.is_empty():
 		var aim_nearest_target = aim_detector.get_nearest_target()
 		if aim_nearest_target:
 			aimer.target_position = aim_nearest_target.global_position - global_position
@@ -36,6 +36,9 @@ func _input(event: InputEvent) -> void:
 		else:
 			equipment.switch_to_next_weapon()	
 
+	if Input.is_action_pressed("ability"):
+		ability.activate()
+
 func _process(_delta: float) -> void:
 	_setup_movement_direction()
 	_setup_aimer_target_position()
@@ -49,20 +52,9 @@ func _process(_delta: float) -> void:
 			if target.get_parent().has_method("set_detected"):
 				target.get_parent().set_detected(false)
 	
-	var current_weapon: Weapon = equipment.get_current_weapon()
-	if Input.is_action_pressed("shoot") && current_weapon && current_weapon._can_shoot:
-		if player_ability.is_dual_fire_active() and equipment._weapons.size() >= 2:
-			var bullets_count = current_weapon.shoot()
-			
-			var second_weapon = equipment._weapons[1 if equipment._current_weapon_i == 0 else 0]
-			if second_weapon._can_shoot:
-				bullets_count += second_weapon.shoot()
-			
-			Input.vibrate_handheld(
-				current_weapon.fire_rate * 100 * Vibration.VIBRATION_STRENGTH, 
-				clamp(current_weapon.fire_rate * bullets_count, 0.1, 1.0) * Vibration.VIBRATION_STRENGTH
-			)
-		else:
+	var current_weapons = equipment.get_current_weapons()
+	if Input.is_action_pressed("shoot") && !current_weapons.is_empty():
+		for current_weapon in current_weapons:
 			var bullets_count = current_weapon.shoot()
 			Input.vibrate_handheld(
 				current_weapon.fire_rate * 100 * Vibration.VIBRATION_STRENGTH, 
