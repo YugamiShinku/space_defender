@@ -6,9 +6,6 @@ class_name ActorAimer extends Node2D
 var target_position := Vector2.ZERO
 
 func _physics_process(delta: float) -> void:
-	_update_rotation(delta)
-
-func _update_rotation(delta: float):	
 	if target_position.length() > 0.1:
 		if target_position.x < 0: rotatable.scale.y = -1
 		elif target_position.x > 0: rotatable.scale.y = 1

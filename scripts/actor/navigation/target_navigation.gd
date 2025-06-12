@@ -1,4 +1,4 @@
-class_name ActorTargetNavigation extends ActorNavigation
+class_name TargetNavigation extends NavigationAgent2D
 
 @export var jitter_radius_range := Vector2(75.0, 125.0)
 @export var jitter_update_interval_range := Vector2(0.5, 0.75)
@@ -14,9 +14,7 @@ func _ready() -> void:
 	_jitter_timer.timeout.connect(_update_jitter)
 	add_child(_jitter_timer)
 
-func _update_jitter() -> void:
-	if !is_navigation_finished(): return
-	
+func _update_jitter() -> void:	
 	_jitter_timer.wait_time = randf_range(jitter_update_interval_range.x, jitter_update_interval_range.y)
 	var random_angle := randf_range(0, TAU)
 	var jitter_radius := randf_range(jitter_radius_range.x, jitter_radius_range.y)
@@ -26,7 +24,7 @@ func _get_target_position() -> Vector2:
 	var nearest_target = detector.get_nearest_target()
 	if nearest_target:
 		return nearest_target.global_position + _current_jitter
-	return get_final_position()
+	return get_final_position() + _current_jitter
 		
 func _process(delta: float) -> void:
-	super._process(delta)
+	target_position = _get_target_position()

@@ -2,7 +2,7 @@ class_name EnemyController extends Node2D
 
 @onready var movement: ActorMovement = $"ActorMovement"
 @onready var health: ActorHealth = $"ActorHealth"
-@onready var navigation: ActorNavigation = $"NavigationAgent2D"
+@onready var navigation: TargetNavigation = $"NavigationAgent2D"
 @onready var aimer: ActorAimer = $"ActorAimer"
 @onready var equipment: ActorEquipment = $"ActorEquipment"
 @onready var animator: ActorAnimator = $"AnimationTree"
@@ -47,6 +47,6 @@ func _on_actor_health_after_take_damage(damage: float) -> void:
 	
 	if health.is_dead():
 		var prob = randf()
-		if prob >= 0.66:
+		if prob >= 0.0:
 			equipment.drop_current_weapon.call_deferred()
 		queue_free()

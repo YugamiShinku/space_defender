@@ -10,14 +10,17 @@ func set_visibility(visible: bool) -> void:
 func switch_visibility() -> void:
 	_canvas_layer.visible = !_canvas_layer.visible
 
+func _ready() -> void:
+	AudioServer.set_bus_layout(preload("res://audio/audio_layout.tres"))
+
 func _on_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(value))
+	AudioServer.set_bus_volume_db(0, linear_to_db(value))
 
 func _on_music_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(value))
+	AudioServer.set_bus_volume_db(1, linear_to_db(value))
 
 func _on_effects_volume_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Effects"), linear_to_db(value))
+	AudioServer.set_bus_volume_db(2, linear_to_db(value))
 
 func _on_vibration_value_changed(value: float) -> void:
 	Vibration.VIBRATION_STRENGTH = value

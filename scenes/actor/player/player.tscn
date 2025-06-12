@@ -464,7 +464,7 @@ script = ExtResource("4_rwg1c")
 
 [node name="Marker2D (Pickup Weapon)" type="Marker2D" parent="."]
 z_index = 1
-position = Vector2(0, -24)
+position = Vector2(-2, -24)
 gizmo_extents = 8.0
 
 [node name="Marker2D (Drop Weapon)" type="Marker2D" parent="."]
@@ -502,6 +502,8 @@ collision_layer = 4
 collision_mask = 16
 script = ExtResource("6_egpl5")
 _health_max = 1000.0
+protection_restoring_rate = 0.01
+_protection_max = 1000.0
 metadata/_custom_type_script = "uid://ltvf8d8y81xv"
 
 [node name="CollisionShape2D (Hit Box)" type="CollisionShape2D" parent="ActorHealth"]
