@@ -424,7 +424,6 @@ target_desired_distance = 30.0
 path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 0.75
-radius = 1000.0
 script = ExtResource("2_7mrng")
 detector = NodePath("../Aim Detector")
 
