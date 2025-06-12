@@ -11,6 +11,7 @@ class_name PlayerController extends Node2D
 @onready var camera: Camera2D = $"Camera2D"
 @onready var effector: ActorEffector = $"ActorEffector"
 @onready var camera_shake: ActorShake = $"ActorShake"
+@onready var player_ability: PlayerAbility = $"PlayerAbility"
 
 func _setup_movement_direction() -> void:
 	movement._direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
@@ -33,11 +34,7 @@ func _input(event: InputEvent) -> void:
 		if nearest_target:
 			equipment.pickup_weapon(nearest_target.get_parent())
 		else:
-			equipment.switch_to_next_weapon()
-		
-	# TODO: ABILITIES
-	if event.is_action_pressed("ability"):
-		pass
+			equipment.switch_to_next_weapon()	
 
 func _process(_delta: float) -> void:
 	_setup_movement_direction()
@@ -54,8 +51,23 @@ func _process(_delta: float) -> void:
 	
 	var current_weapon: Weapon = equipment.get_current_weapon()
 	if Input.is_action_pressed("shoot") && current_weapon && current_weapon._can_shoot:
-		var bullets_count := current_weapon.shoot()
-		Input.vibrate_handheld(current_weapon.fire_rate * 100 * Vibration.VIBRATION_STRENGTH, clamp(current_weapon.fire_rate * bullets_count, 0.1, 1.0) * Vibration.VIBRATION_STRENGTH)
+		if player_ability.is_dual_fire_active() and equipment._weapons.size() >= 2:
+			var bullets_count = current_weapon.shoot()
+			
+			var second_weapon = equipment._weapons[1 if equipment._current_weapon_i == 0 else 0]
+			if second_weapon._can_shoot:
+				bullets_count += second_weapon.shoot()
+			
+			Input.vibrate_handheld(
+				current_weapon.fire_rate * 100 * Vibration.VIBRATION_STRENGTH, 
+				clamp(current_weapon.fire_rate * bullets_count, 0.1, 1.0) * Vibration.VIBRATION_STRENGTH
+			)
+		else:
+			var bullets_count = current_weapon.shoot()
+			Input.vibrate_handheld(
+				current_weapon.fire_rate * 100 * Vibration.VIBRATION_STRENGTH, 
+				clamp(current_weapon.fire_rate * bullets_count, 0.1, 1.0) * Vibration.VIBRATION_STRENGTH
+			)
 
 func _on_actor_health_after_take_damage(damage: float) -> void:
 	Input.vibrate_handheld(damage * 100 * Vibration.VIBRATION_STRENGTH, (damage / 2) * Vibration.VIBRATION_STRENGTH)

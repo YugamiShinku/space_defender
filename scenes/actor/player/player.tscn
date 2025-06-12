@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cwag33x4rk4mh"]
+[gd_scene load_steps=41 format=3 uid="uid://cwag33x4rk4mh"]
 
 [ext_resource type="Script" uid="uid://ct14n3pajnjc6" path="res://scripts/actor/player_controller.gd" id="1_45651"]
 [ext_resource type="Script" uid="uid://pgm1sd3syd54" path="res://scripts/actor/actor_movement.gd" id="1_itu6y"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://b43vtels5n8e2" path="res://scripts/actor/actor_detector.gd" id="6_45651"]
 [ext_resource type="Script" uid="uid://ltvf8d8y81xv" path="res://scripts/actor/actor_health.gd" id="6_egpl5"]
 [ext_resource type="Script" uid="uid://dgji7k80x8k3b" path="res://scripts/actor/actor_equipment.gd" id="7_itu6y"]
+[ext_resource type="Script" uid="uid://dg0ual8lc7p1i" path="res://scenes/actor/player/player_ability.gd" id="10_da3jf"]
 [ext_resource type="Script" uid="uid://dylxwbngibnom" path="res://scripts/actor/actor_aimer.gd" id="10_r3jy3"]
 [ext_resource type="Script" uid="uid://dv2cdp1ks5cjq" path="res://scripts/actor/actor_effector.gd" id="11_x0gpd"]
 [ext_resource type="Script" uid="uid://bovrtd83imkic" path="res://scripts/actor/actor_shake.gd" id="12_da11b"]
@@ -520,6 +521,13 @@ script = ExtResource("7_itu6y")
 pickup_marker = NodePath("../Marker2D (Pickup Weapon)")
 drop_marker = NodePath("../Marker2D (Drop Weapon)")
 metadata/_custom_type_script = "uid://dgji7k80x8k3b"
+
+[node name="PlayerAbility" type="Node2D" parent="."]
+script = ExtResource("10_da3jf")
+
+[node name="Timer" type="Timer" parent="PlayerAbility"]
+
+[node name="CooldownTimer" type="Timer" parent="PlayerAbility"]
 
 [node name="ActorAimer" type="Node2D" parent="." node_paths=PackedStringArray("rotatable")]
 script = ExtResource("10_r3jy3")
