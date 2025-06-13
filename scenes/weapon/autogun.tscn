@@ -16,7 +16,7 @@ shader_parameter/outline_thickness = 1.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
 size = Vector2(32, 11.5)
 
-[node name="Weapon (Autogun)" type="Node2D"]
+[node name="Weapon (Autogun)" type="Node2D" groups=["Weapon"]]
 script = ExtResource("1_ersj5")
 reload_time = 1.25
 bullet_scene = ExtResource("2_wmbu3")

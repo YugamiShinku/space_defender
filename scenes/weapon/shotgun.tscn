@@ -16,7 +16,7 @@ shader_parameter/outline_thickness = 1.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
 size = Vector2(32, 11.5)
 
-[node name="Weapon (Shotgun)" type="Node2D"]
+[node name="Weapon (Shotgun)" type="Node2D" groups=["Weapon"]]
 script = ExtResource("2_yy7hw")
 fire_rate = 0.5
 spread = 30.0

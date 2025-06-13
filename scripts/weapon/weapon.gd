@@ -25,6 +25,9 @@ func _ready():
 func set_pickable(enabled: bool):
 	pickup_area.monitorable = enabled
 
+func is_pickable() -> bool:
+	return pickup_area.monitorable
+
 func shoot() -> int:
 	if !_can_shoot || _current_ammo <= 0:
 		return 0

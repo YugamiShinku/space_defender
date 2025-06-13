@@ -47,7 +47,13 @@ func _on_actor_health_after_take_damage(damage: float) -> void:
 	effector.blink_thickness()
 	
 	if health.is_dead():
-		var prob = randf()
-		if prob >= 0.0:
+		var scene_weapons := get_tree().get_nodes_in_group("Weapon")
+		var exists_exact := scene_weapons.any(
+			func(scene_weapon: Weapon):
+				var on_scene = equipment.get_current_weapons()[0].scene_path == scene_weapon.scene_path
+				var pickable = scene_weapon.is_pickable()
+				return on_scene and pickable
+		)
+		if !exists_exact:
 			equipment.drop_current_weapon.call_deferred()
 		queue_free()
