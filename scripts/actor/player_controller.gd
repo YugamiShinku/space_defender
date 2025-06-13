@@ -67,4 +67,5 @@ func _on_actor_health_after_take_damage(damage: float) -> void:
 	camera_shake.shake(damage / 2)
 
 	if health.is_dead():
+		SaveLoad.delete()
 		get_tree().reload_current_scene()

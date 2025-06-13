@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bea5pe1oljiw5"]
+[gd_scene load_steps=11 format=3 uid="uid://bea5pe1oljiw5"]
 
 [ext_resource type="Script" uid="uid://dkhqfvlydgigh" path="res://scripts/ui/settings_menu.gd" id="1_x2hje"]
 [ext_resource type="Texture2D" uid="uid://dbxh8alx2ajt8" path="res://assets/ui/grabber.png" id="2_mhswj"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://c0d851ggkrxu6" path="res://assets/ui/vfx.png" id="5_ywggk"]
 [ext_resource type="Texture2D" uid="uid://h5g7muluabpr" path="res://assets/ui/music.png" id="6_ngbvi"]
 [ext_resource type="Texture2D" uid="uid://ds3k51m8j3iys" path="res://assets/ui/vibration.png" id="8_mishw"]
-[ext_resource type="AudioStream" uid="uid://bwlt2rbdxt1gh" path="res://audio/button_pressed.mp3" id="9_h271e"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0b1cv"]
 texture = ExtResource("3_x3vyp")
@@ -107,7 +106,6 @@ texture = ExtResource("8_mishw")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 process_mode = 3
-stream = ExtResource("9_h271e")
 
 [connection signal="drag_ended" from="CanvasLayer/MasterVolume" to="." method="_on_master_volume_drag_ended"]
 [connection signal="value_changed" from="CanvasLayer/MasterVolume" to="." method="_on_volume_value_changed"]

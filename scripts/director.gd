@@ -1,7 +1,6 @@
 class_name Director extends Node2D
 
 @onready var _tilemap_generator: TileMapGenerator = $"Tilemap Generator"
-@onready var _player_controller: PlayerController = $"Player Controller"
 @onready var _tilemap_spawner: TilemapSpawner = $"Tilemap Spawner"
 @onready var _main_menu: MainMenu = $"MainMenu"
 @onready var _game_menu: GameMenu = $"GameMenu"
@@ -9,6 +8,10 @@ class_name Director extends Node2D
 @onready var _settings_menu: SettingsMenu = $"SettingsMenu"
 @onready var _quit_menu: QuitMenu = $"QuitMenu"
 @onready var _environment_audio: AudioStreamPlayer2D = $"AudioStreamPlayer2D"
+
+@onready var _player_scene: PackedScene = preload("res://scenes/actor/player/player.tscn")
+
+var _player_controller: PlayerController
 
 var _after_next_room_timer := Timer.new()
 var _wave_delay_timer := Timer.new()
@@ -28,9 +31,29 @@ var _current_wave := -1
 var _enemies_to_spawn_in_current_wave := 0
 
 func _ready() -> void:
+	var load_data := SaveLoad.load_data()
+	
+	_player_controller = _player_scene.instantiate()
+	get_tree().current_scene.add_child(_player_controller)
+	
+	if load_data:
+		_player_controller.health._health_current = load_data._player_health
+		for weapon_scene_path in load_data._weapons_scene_paths:
+			print("loaded: ", weapon_scene_path)
+			var weapon_scene: Weapon = load(weapon_scene_path).instantiate()
+			get_tree().current_scene.add_child(weapon_scene)
+			_player_controller.equipment.pickup_weapon(weapon_scene)
+
+	if !load_data or load_data._weapons_scene_paths.is_empty():
+		var weapon_scene: Weapon = preload("res://scenes/weapon/pioner.tscn").instantiate()
+		get_tree().current_scene.add_child(weapon_scene)
+		_player_controller.equipment.pickup_weapon(weapon_scene)
+	
+	_game_menu.player_controller = _player_controller
+	
 	get_tree().paused = true
 	_environment_audio.play()
-	_game_menu.set_visibility(true)
+	_main_menu.set_visibility(true)
 	_game_menu.set_visibility(false)
 	_pause_menu.set_visibility(false)
 	_settings_menu.set_visibility(false)
@@ -138,6 +161,13 @@ func _spawn_enemy_in_wave() -> void:
 func _after_next_room() -> void:
 	_tilemap_generator.destroy_previous_room()
 	destroy_previous_trigger()
+	
+	var save_data := SaveData.new()
+	save_data._player_health = _player_controller.health._health_current
+	for weapon in _player_controller.equipment._weapons:
+		save_data._weapons_scene_paths.append(weapon.scene_path)
+	SaveLoad.save(save_data)
+	
 	_start_wave_spawning()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:

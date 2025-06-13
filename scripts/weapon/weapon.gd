@@ -6,9 +6,12 @@ class_name Weapon extends Node2D
 @export_range(0, 180, 1) var spread := -2.5
 @export var bullets_per_shot_range := Vector2i(1, 1)
 @export var bullet_scene: PackedScene
-@onready var sprite: Sprite2D = $"Sprite2D" 
 
-@onready var muzzle: Marker2D = $"Marker2D (Muzzle)"
+@export var scene_path: String
+
+@onready var muzzle := $"Marker2D (Muzzle)"
+@onready var pickup_area := $"Area2D (Pickup)"
+
 @onready var _shoot_timer := Timer.new()
 
 var _current_ammo := ammo
@@ -18,8 +21,6 @@ func _ready():
 	_shoot_timer.wait_time = fire_rate
 	_shoot_timer.timeout.connect(_on_reload)
 	add_child(_shoot_timer)
-
-@onready var pickup_area: Area2D = $"Area2D (Pickup)"
 
 func set_pickable(enabled: bool):
 	pickup_area.monitorable = enabled

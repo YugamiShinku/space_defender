@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://b33drci8du64q"]
 
 [ext_resource type="Texture2D" uid="uid://bbhto01k2173p" path="res://assets/weapon/shotgun.png" id="1_m25pm"]
-[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/gun.gd" id="2_yy7hw"]
+[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon.gd" id="2_yy7hw"]
 [ext_resource type="Shader" uid="uid://s57jlne0bimo" path="res://shaders/outline_blink.tres" id="3_7245q"]
 [ext_resource type="PackedScene" uid="uid://dftkr7xbimjpf" path="res://scenes/weapon/bullet/bullet3.tscn" id="3_m25pm"]
 
@@ -22,6 +22,7 @@ fire_rate = 0.5
 spread = 30.0
 bullets_per_shot_range = Vector2i(5, 7)
 bullet_scene = ExtResource("3_m25pm")
+scene_path = "res://scenes/weapon/shotgun.tscn"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_x47sy")

@@ -22,19 +22,21 @@ func _ready() -> void:
 	add_child(cooldown_timer)
 
 func activate() -> void:
-	if is_active or !can_use: return
+	if is_active or !can_use or equipment._weapons.size() < 2: return
 	
 	is_active = true
 	can_use = false
 	
-	equipment.toggle_macedonian_shooting()
+	equipment._current_weapons = [equipment._weapons.size() - 2, equipment._weapons.size() - 1]
+	equipment._update_weapon_visibility()
 	
 	duration_timer.start()
 	
 func _on_ability() -> void:
 	if _current <= 0.0:
 		if is_active: 
-			equipment.toggle_macedonian_shooting()
+			equipment._current_weapons = [equipment._weapons.size() - 1]
+			equipment._update_weapon_visibility()
 			cooldown_timer.start()
 		is_active = false
 		duration_timer.stop()

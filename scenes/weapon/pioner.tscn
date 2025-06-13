@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://d1w57o3f5434k"]
+
+[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon.gd" id="1_qdf1t"]
+[ext_resource type="PackedScene" uid="uid://dljpl56tgwq5y" path="res://scenes/weapon/bullet/bullet1.tscn" id="2_0pnvv"]
+[ext_resource type="Shader" uid="uid://s57jlne0bimo" path="res://shaders/outline_blink.tres" id="3_a06un"]
+[ext_resource type="Texture2D" uid="uid://woqiyd5wojda" path="res://assets/weapon/pioner.png" id="4_qdf1t"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a708l"]
+resource_local_to_scene = true
+shader = ExtResource("3_a06un")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/blink_color = Color(0, 0, 0, 1)
+shader_parameter/blink_intensity = 0.0
+shader_parameter/outline_thickness = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
+size = Vector2(32, 11.5)
+
+[node name="Weapon (Rifle)" type="Node2D"]
+script = ExtResource("1_qdf1t")
+fire_rate = 0.1
+reload_time = 1.0
+bullet_scene = ExtResource("2_0pnvv")
+scene_path = "res://scenes/weapon/pioner.tscn"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_a708l")
+texture = ExtResource("4_qdf1t")
+
+[node name="Area2D (Pickup)" type="Area2D" parent="."]
+visible = false
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D (Pickup)" type="CollisionShape2D" parent="Area2D (Pickup)"]
+shape = SubResource("RectangleShape2D_lanok")
+
+[node name="Marker2D (Muzzle)" type="Marker2D" parent="."]
+position = Vector2(28, -1)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

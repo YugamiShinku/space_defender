@@ -6,20 +6,7 @@ class_name ActorEquipment extends Node2D
 @export var drop_marker: Marker2D
 
 var _weapons: Array[Weapon] = []
-var _current_weapons: Array[int] = [] 
-
-func toggle_macedonian_shooting() -> void:
-	if _weapons.size() < 2:
-		return
-	
-	# Если уже активны два оружия - переключаемся на одно
-	if _current_weapons.size() >= 2:
-		_current_weapons = [_weapons.size() - 1]  # Только последнее оружие
-	else:
-		# Активируем два последних оружия
-		_current_weapons = [_weapons.size() - 2, _weapons.size() - 1]
-	
-	_update_weapon_visibility()
+var _current_weapons: Array[int] = []
 
 func get_current_weapons() -> Array[Weapon]:
 	var result: Array[Weapon] = []

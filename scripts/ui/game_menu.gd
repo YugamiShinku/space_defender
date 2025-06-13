@@ -27,8 +27,6 @@ func _process(delta: float) -> void:
 	else:
 		_skill_bar.visible = false
 		_skill_button.visible = true
-		
-	print(player_controller.ability._current)	
 
 func _on_touch_screen_button_pause_released() -> void:
 	get_tree().paused = true
