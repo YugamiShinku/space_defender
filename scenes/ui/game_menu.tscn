@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://blqafrdnm7xks"]
+[gd_scene load_steps=19 format=3 uid="uid://blqafrdnm7xks"]
 
 [ext_resource type="Script" uid="uid://io1di72dk4qn" path="res://scripts/ui/game_menu.gd" id="1_3rbob"]
 [ext_resource type="Script" uid="uid://c38xjeb4ndo2" path="res://scripts/ui/virtual_joystick.gd" id="1_5s0hc"]
@@ -17,8 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://by4m66dxvk0up" path="res://assets/ui/switch_pressed.png" id="13_idx1i"]
 [ext_resource type="Texture2D" uid="uid://ceu1pf3ietoh1" path="res://assets/ui/shield.png" id="14_idx1i"]
 [ext_resource type="Texture2D" uid="uid://hq14d2tb1ckm" path="res://assets/ui/skill_pressed.png" id="15_pvm57"]
+[ext_resource type="FontFile" uid="uid://cmq68xrk2odb8" path="res://fonts/E-SQUARE_demo.otf" id="18_trydy"]
 
-[node name="GameMenu" type="Control"]
+[node name="GameMenu" type="Control" node_paths=PackedStringArray("audio_stream")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,6 +27,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3rbob")
+audio_stream = NodePath("AudioStreamPlayer2D")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -95,6 +97,21 @@ texture = ExtResource("2_nrj1f")
 [node name="Shield" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(24, 49)
 texture = ExtResource("14_idx1i")
+
+[node name="Label (SegmentCount)" type="Label" parent="CanvasLayer"]
+offset_left = 275.0
+offset_top = 23.0
+offset_right = 389.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0.521569, 1, 0.521569, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("18_trydy")
+theme_override_font_sizes/font_size = 24
+text = "1 Segment"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
 
 [connection signal="analogic_change" from="CanvasLayer/VirtualJoystick" to="CanvasLayer/VirtualJoystick" method="_on_analogic_change"]
 [connection signal="released" from="CanvasLayer/TouchScreenButton (Pause)" to="." method="_on_touch_screen_button_pause_released"]

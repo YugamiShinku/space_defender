@@ -21,7 +21,6 @@ buses/default_bus_layout=""
 
 [autoload]
 
-Vibration="*res://scripts/utils/vibration.gd"
 AudioSources="*res://scripts/utils/audio_sources.gd"
 SaveLoad="*res://scripts/save/save_load.gd"
 

@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://csk54rbc5onda"]
+[gd_scene load_steps=8 format=3 uid="uid://csk54rbc5onda"]
 
 [ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon.gd" id="1_ersj5"]
-[ext_resource type="PackedScene" uid="uid://86gukhbcc4xq" path="res://scenes/weapon/bullet/bullet2.tscn" id="2_wmbu3"]
+[ext_resource type="PackedScene" uid="uid://dftkr7xbimjpf" path="res://scenes/weapon/bullet/light_bullet.tscn" id="2_wmbu3"]
 [ext_resource type="Texture2D" uid="uid://ducolv6rwbs4w" path="res://assets/weapon/autogun.png" id="3_ly1a2"]
 [ext_resource type="Shader" uid="uid://s57jlne0bimo" path="res://shaders/outline_blink.tres" id="3_wmbu3"]
+[ext_resource type="AudioStream" uid="uid://b1oh6x4j78hft" path="res://audio/SFX_Gunshots/Single_Gunshot_02.mp3" id="5_ly1a2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ly1a2"]
 resource_local_to_scene = true
@@ -18,7 +19,11 @@ size = Vector2(32, 11.5)
 
 [node name="Weapon (Autogun)" type="Node2D" groups=["Weapon"]]
 script = ExtResource("1_ersj5")
+fire_rate = 0.75
+ammo = 5
 reload_time = 1.25
+spread = 45.0
+bullets_per_shot_range = Vector2i(8, 10)
 bullet_scene = ExtResource("2_wmbu3")
 scene_path = "res://scenes/weapon/autogun.tscn"
 
@@ -41,3 +46,5 @@ y_sort_enabled = true
 position = Vector2(28, -2)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_ly1a2")
+bus = &"VFX"

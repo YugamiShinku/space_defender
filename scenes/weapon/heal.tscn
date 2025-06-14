@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0nd53swmei6m"]
+
+[ext_resource type="Script" uid="uid://q8kdlvcpfxun" path="res://scripts/weapon/heal.gd" id="1_mcyp3"]
+[ext_resource type="Texture2D" uid="uid://dh8pdj5h0wiu" path="res://assets/weapon/heal.png" id="2_mcyp3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gosym"]
+radius = 17.5
+
+[node name="Heal" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_mcyp3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("2_mcyp3")
+
+[node name="Area2D (Collider)" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D (Collider)" type="CollisionShape2D" parent="Area2D (Collider)"]
+position = Vector2(0, 0.5)
+shape = SubResource("CircleShape2D_gosym")
+
+[connection signal="area_entered" from="Area2D (Collider)" to="." method="_on_area_2d_collider_area_entered"]
+[connection signal="body_entered" from="Area2D (Collider)" to="." method="_on_area_2d_collider_body_entered"]

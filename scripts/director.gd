@@ -11,6 +11,8 @@ class_name Director extends Node2D
 
 @onready var _player_scene: PackedScene = preload("res://scenes/actor/player/player.tscn")
 
+var _room_count := 0
+
 var _player_controller: PlayerController
 
 var _after_next_room_timer := Timer.new()
@@ -37,6 +39,7 @@ func _ready() -> void:
 	get_tree().current_scene.add_child(_player_controller)
 	
 	if load_data:
+		_room_count = load_data._room_count
 		_player_controller.health._health_current = load_data._player_health
 		for weapon_scene_path in load_data._weapons_scene_paths:
 			print("loaded: ", weapon_scene_path)
@@ -49,10 +52,7 @@ func _ready() -> void:
 		get_tree().current_scene.add_child(weapon_scene)
 		_player_controller.equipment.pickup_weapon(weapon_scene)
 	
-	_game_menu.player_controller = _player_controller
-	
 	get_tree().paused = true
-	_environment_audio.play()
 	_main_menu.set_visibility(true)
 	_game_menu.set_visibility(false)
 	_pause_menu.set_visibility(false)
@@ -76,7 +76,6 @@ func _ready() -> void:
 	
 	# Инициализация игры
 	get_tree().paused = true
-	_environment_audio.play()
 	_game_menu.visible = false
 	_pause_menu.visible = false
 	_settings_menu.visible = false
@@ -142,6 +141,8 @@ func _process(delta: float) -> void:
 		var new_room = _tilemap_generator.generate_next_room()
 		add_room_trigger(new_room)
 		
+		_player_controller.health.boost_protection()
+		
 		var previous_trigger = _triggers.front()
 		if previous_trigger:
 			previous_trigger.disconnect("area_entered", Callable(self, "_on_area_2d_area_entered"))
@@ -162,7 +163,10 @@ func _after_next_room() -> void:
 	_tilemap_generator.destroy_previous_room()
 	destroy_previous_trigger()
 	
+	_room_count += 1
+	
 	var save_data := SaveData.new()
+	save_data._room_count = _room_count
 	save_data._player_health = _player_controller.health._health_current
 	for weapon in _player_controller.equipment._weapons:
 		save_data._weapons_scene_paths.append(weapon.scene_path)

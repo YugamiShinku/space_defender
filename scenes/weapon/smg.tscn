@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://dytgkbiy6ipuk"]
+
+[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon.gd" id="1_cqjml"]
+[ext_resource type="PackedScene" uid="uid://86gukhbcc4xq" path="res://scenes/weapon/bullet/medium_bullet.tscn" id="2_kk7gt"]
+[ext_resource type="Material" uid="uid://noqgtnxgtj8u" path="res://shaders/red.tres" id="3_cqjml"]
+[ext_resource type="Texture2D" uid="uid://dokyvysktcuh0" path="res://assets/weapon/smg.png" id="4_cqjml"]
+[ext_resource type="AudioStream" uid="uid://bsg8dga2dqg1t" path="res://audio/SFX_Gunshots/Retro Gun SingleShot 04.mp3" id="5_kk7gt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
+size = Vector2(32, 11.5)
+
+[node name="Weapon (smg)" type="Node2D" groups=["Weapon"]]
+script = ExtResource("1_cqjml")
+fire_rate = 0.12
+ammo = 25
+reload_time = 1.0
+spread = 2.0
+bullet_scene = ExtResource("2_kk7gt")
+scene_path = "res://scenes/weapon/smg.tscn"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("3_cqjml")
+texture = ExtResource("4_cqjml")
+
+[node name="Area2D (Pickup)" type="Area2D" parent="."]
+visible = false
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D (Pickup)" type="CollisionShape2D" parent="Area2D (Pickup)"]
+shape = SubResource("RectangleShape2D_lanok")
+
+[node name="Marker2D (Muzzle)" type="Marker2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(28, -2)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_kk7gt")

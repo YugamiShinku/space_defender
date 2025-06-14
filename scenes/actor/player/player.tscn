@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cwag33x4rk4mh"]
+[gd_scene load_steps=45 format=3 uid="uid://cwag33x4rk4mh"]
 
 [ext_resource type="Script" uid="uid://ct14n3pajnjc6" path="res://scripts/actor/player_controller.gd" id="1_45651"]
 [ext_resource type="Script" uid="uid://pgm1sd3syd54" path="res://scripts/actor/actor_movement.gd" id="1_itu6y"]
@@ -13,6 +13,11 @@
 [ext_resource type="Script" uid="uid://dylxwbngibnom" path="res://scripts/actor/actor_aimer.gd" id="10_r3jy3"]
 [ext_resource type="Script" uid="uid://dv2cdp1ks5cjq" path="res://scripts/actor/actor_effector.gd" id="11_x0gpd"]
 [ext_resource type="Script" uid="uid://bovrtd83imkic" path="res://scripts/actor/actor_shake.gd" id="12_da11b"]
+[ext_resource type="AudioStream" uid="uid://yn56ns5mwcy1" path="res://audio/environment.mp3" id="14_ct7pk"]
+[ext_resource type="Script" uid="uid://xxobklnlc7ey" path="res://scripts/environment_audio.gd" id="15_g3dy0"]
+[ext_resource type="AudioStream" uid="uid://o3xhnwr0t0uv" path="res://audio/heal.mp3" id="16_g3dy0"]
+[ext_resource type="AudioStream" uid="uid://cligsnucc5s73" path="res://audio/ability.mp3" id="17_61tam"]
+[ext_resource type="AudioStream" uid="uid://duhhblb20e8jd" path="res://audio/bling.mp3" id="17_ab35v"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mfkd"]
 radius = 7.0
@@ -545,6 +550,26 @@ metadata/_custom_type_script = "uid://bovrtd83imkic"
 script = ExtResource("10_da3jf")
 equipment = NodePath("../ActorEquipment")
 metadata/_custom_type_script = "uid://dg0ual8lc7p1i"
+
+[node name="AudioStreamPlayer2D (Environment)" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("14_ct7pk")
+pitch_scale = 1.25
+autoplay = true
+bus = &"Music"
+script = ExtResource("15_g3dy0")
+
+[node name="AudioStreamPlayer2D (Heal)" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_g3dy0")
+bus = &"VFX"
+
+[node name="AudioStreamPlayer2D (Ability)" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("17_61tam")
+bus = &"VFX"
+
+[node name="AudioStreamPlayer2D (Bling)" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("17_ab35v")
+bus = &"VFX"
 
 [connection signal="area_entered" from="Weapon Detector" to="Weapon Detector" method="_on_area_entered"]
 [connection signal="area_exited" from="Weapon Detector" to="Weapon Detector" method="_on_area_exited"]

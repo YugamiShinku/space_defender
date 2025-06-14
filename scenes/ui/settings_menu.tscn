@@ -46,7 +46,7 @@ theme_override_icons/grabber_highlight = ExtResource("2_mhswj")
 theme_override_styles/slider = SubResource("StyleBoxTexture_0b1cv")
 max_value = 1.0
 step = 0.001
-value = 0.5
+value = 1.0
 metadata/_edit_use_anchors_ = true
 
 [node name="MusicVolume" type="HSlider" parent="CanvasLayer"]
@@ -59,7 +59,7 @@ theme_override_icons/grabber_highlight = ExtResource("2_mhswj")
 theme_override_styles/slider = SubResource("StyleBoxTexture_ywggk")
 max_value = 1.0
 step = 0.001
-value = 0.5
+value = 1.0
 metadata/_edit_use_anchors_ = true
 
 [node name="EffectsVolume" type="HSlider" parent="CanvasLayer"]
@@ -72,7 +72,7 @@ theme_override_icons/grabber_highlight = ExtResource("2_mhswj")
 theme_override_styles/slider = SubResource("StyleBoxTexture_ywggk")
 max_value = 1.0
 step = 0.001
-value = 0.5
+value = 1.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Vibration" type="HSlider" parent="CanvasLayer"]

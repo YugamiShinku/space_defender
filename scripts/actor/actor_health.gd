@@ -2,21 +2,32 @@ class_name ActorHealth extends Area2D
 
 signal after_take_damage(damage: float)
 
+@export_range(0.0, 10.0, 0.01) var health_restoring_rate := 0.0625
+@export_range(0.0, 10.0, 0.1) var health_restoring_count := 1.0
 @export_range(0.0, 1000.0, 1.0) var _health_max := 100.0
 @export var protection_restoring := true
 @export_range(0.0, 10.0, 0.01) var protection_restoring_rate := 0.25
 @export_range(0.0, 10.0, 0.1) var protection_restoring_count := 1.0
 @export_range(0.0, 1000.0, 1.0) var _protection_max := 100.0
 
+var _boost_protection := false
+
+var heal_to: float = 0.0
+
 @onready var _health_current := _health_max
 @onready var _protection_current := _protection_max
 
+@onready var _health_restoring_timer := Timer.new()
 @onready var _protection_restoring_timer := Timer.new()
 
 func _ready() -> void:
+	_health_restoring_timer.wait_time = health_restoring_rate
+	_health_restoring_timer.timeout.connect(_on_restore_health)
+	add_child(_health_restoring_timer)
+	
 	_protection_restoring_timer.wait_time = protection_restoring_rate
 	_protection_restoring_timer.autostart = protection_restoring
-	_protection_restoring_timer.timeout.connect(_on_restore)
+	_protection_restoring_timer.timeout.connect(_on_restore_protection)
 	add_child(_protection_restoring_timer)
 
 func take_damage(damage: float) -> void:
@@ -41,9 +52,33 @@ func take_damage(damage: float) -> void:
 func is_dead() -> bool:
 	return _health_current <= 0
 
+func boost_heal(heal: float) -> void:
+	if heal_to == 0.0:
+		heal_to = _health_current + heal
+	else:
+		heal_to += heal
+
+	_health_restoring_timer.start()
+
+func boost_protection() -> void:
+	_boost_protection = true
+	protection_restoring_rate /= 10
+	_protection_restoring_timer.wait_time = protection_restoring_rate
+
 func _on_area_entered(area: Area2D) -> void:
 	take_damage(area.get_parent().damage)
 
-func _on_restore() -> void:
+func _on_restore_health() -> void:
+	if _health_current >= heal_to:
+		heal_to = 0.0
+		_health_restoring_timer.stop()
+	_health_current = min(_health_current + health_restoring_count, _health_max)
+
+func _on_restore_protection() -> void:
+	if _protection_current >= _protection_max and _boost_protection:
+		protection_restoring_rate *= 10
+		_protection_restoring_timer.wait_time = protection_restoring_rate
+		_boost_protection = false
+	
 	if _protection_current >= _protection_max and protection_restoring: return
 	_protection_current = min(_protection_current + protection_restoring_count, _protection_max)

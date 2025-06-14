@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://c2qd662hn2ub6"]
+
+[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon.gd" id="1_7adle"]
+[ext_resource type="PackedScene" uid="uid://86gukhbcc4xq" path="res://scenes/weapon/bullet/medium_bullet.tscn" id="2_hxu38"]
+[ext_resource type="Material" uid="uid://cv0xevsh8dnfu" path="res://shaders/purple.tres" id="3_7adle"]
+[ext_resource type="Texture2D" uid="uid://s5ys2tsrb3u6" path="res://assets/weapon/coilgun.png" id="4_7adle"]
+[ext_resource type="AudioStream" uid="uid://eo2npgx635cb" path="res://audio/SFX_Gunshots/NES-Sfx_Gunshot_02.mp3" id="5_hxu38"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
+size = Vector2(32, 11.5)
+
+[node name="Weapon (Coilgun)" type="Node2D" groups=["Weapon"]]
+script = ExtResource("1_7adle")
+reload_time = 1.25
+bullet_scene = ExtResource("2_hxu38")
+scene_path = "res://scenes/weapon/coilgun.tscn"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("3_7adle")
+texture = ExtResource("4_7adle")
+
+[node name="Area2D (Pickup)" type="Area2D" parent="."]
+visible = false
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D (Pickup)" type="CollisionShape2D" parent="Area2D (Pickup)"]
+shape = SubResource("RectangleShape2D_lanok")
+
+[node name="Marker2D (Muzzle)" type="Marker2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(28, -2)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_hxu38")

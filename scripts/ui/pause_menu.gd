@@ -13,22 +13,22 @@ func set_visibility(visible: bool) -> void:
 	if !visible:
 		settings_menu.set_visibility(false)
 
-func _on_touch_screen_button_resume_pressed() -> void:
+func _on_touch_screen_button_quit_released() -> void:
+	audio_stream.stream = AudioSources.ERROR
+	audio_stream.play()
+	
+	quit_menu.set_visibility(true)
+
+func _on_touch_screen_button_settings_released() -> void:
+	audio_stream.stream = AudioSources.BUTTON_PRESSED
+	audio_stream.play()
+	
+	settings_menu.switch_visibility()
+
+func _on_touch_screen_button_resume_released() -> void:
 	audio_stream.stream = AudioSources.BUTTON_PRESSED
 	audio_stream.play()
 	
 	get_tree().paused = false
 	game_menu.set_visibility(true)
 	set_visibility(false)
-
-func _on_touch_screen_button_settings_pressed() -> void:
-	audio_stream.stream = AudioSources.BUTTON_PRESSED
-	audio_stream.play()
-	
-	settings_menu.switch_visibility()
-
-func _on_touch_screen_button_quit_pressed() -> void:
-	audio_stream.stream = AudioSources.ERROR
-	audio_stream.play()
-	
-	quit_menu.set_visibility(true)

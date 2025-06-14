@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5tnxh6p6eb1c"
-path="res://.godot/imported/weapon1.png-2f8bb5a4d121d999eb563d38332508c8.ctex"
+uid="uid://bcqgspqv444w7"
+path="res://.godot/imported/viper.png-818f200811834edfce494f6d2b044c56.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/weapon/weapon1.png"
-dest_files=["res://.godot/imported/weapon1.png-2f8bb5a4d121d999eb563d38332508c8.ctex"]
+source_file="res://assets/weapon/viper.png"
+dest_files=["res://.godot/imported/viper.png-818f200811834edfce494f6d2b044c56.ctex"]
 
 [params]
 

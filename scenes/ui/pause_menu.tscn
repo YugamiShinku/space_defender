@@ -39,6 +39,6 @@ texture_pressed = ExtResource("7_8fwbo")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 process_mode = 3
 
-[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Quit)" to="." method="_on_touch_screen_button_quit_pressed"]
-[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Settings)" to="." method="_on_touch_screen_button_settings_pressed"]
-[connection signal="pressed" from="CanvasLayer/TouchScreenButton (Resume)" to="." method="_on_touch_screen_button_resume_pressed"]
+[connection signal="released" from="CanvasLayer/TouchScreenButton (Quit)" to="." method="_on_touch_screen_button_quit_released"]
+[connection signal="released" from="CanvasLayer/TouchScreenButton (Settings)" to="." method="_on_touch_screen_button_settings_released"]
+[connection signal="released" from="CanvasLayer/TouchScreenButton (Resume)" to="." method="_on_touch_screen_button_resume_released"]

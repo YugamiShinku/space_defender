@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsuiml0fmriqe"
-path="res://.godot/imported/bullet3.png-0809dbe264e4bbe637de537ad977ff6e.ctex"
+uid="uid://bm8bwrhwen2wq"
+path="res://.godot/imported/grenade.png-1e58895ee4ba54c2145a57d45e05fb43.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/weapon/bullet/bullet3.png"
-dest_files=["res://.godot/imported/bullet3.png-0809dbe264e4bbe637de537ad977ff6e.ctex"]
+source_file="res://assets/weapon/bullet/grenade.png"
+dest_files=["res://.godot/imported/grenade.png-1e58895ee4ba54c2145a57d45e05fb43.ctex"]
 
 [params]
 

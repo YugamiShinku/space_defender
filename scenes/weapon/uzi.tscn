@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://coiy8uy76mu4x"]
+
+[ext_resource type="Script" uid="uid://ly8s527sn5q6" path="res://scripts/weapon/weapon.gd" id="1_22hi3"]
+[ext_resource type="PackedScene" uid="uid://86gukhbcc4xq" path="res://scenes/weapon/bullet/medium_bullet.tscn" id="2_amcgn"]
+[ext_resource type="Material" uid="uid://em2p7spk5huc" path="res://shaders/blue.tres" id="3_22hi3"]
+[ext_resource type="Texture2D" uid="uid://6rlejnkv3gtw" path="res://assets/weapon/uzi.png" id="4_22hi3"]
+[ext_resource type="AudioStream" uid="uid://cge6qs4w5i8lh" path="res://audio/SFX_Gunshots/20-WEAPON_1.mp3" id="5_amcgn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lanok"]
+size = Vector2(32, 11.5)
+
+[node name="Weapon (uzi)" type="Node2D" groups=["Weapon"]]
+script = ExtResource("1_22hi3")
+fire_rate = 0.1
+ammo = 25
+reload_time = 1.0
+spread = 5.0
+bullet_scene = ExtResource("2_amcgn")
+scene_path = "res://scenes/weapon/uzi.tscn"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("3_22hi3")
+texture = ExtResource("4_22hi3")
+
+[node name="Area2D (Pickup)" type="Area2D" parent="."]
+visible = false
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D (Pickup)" type="CollisionShape2D" parent="Area2D (Pickup)"]
+shape = SubResource("RectangleShape2D_lanok")
+
+[node name="Marker2D (Muzzle)" type="Marker2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(28, -2)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_amcgn")

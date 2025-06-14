@@ -1,6 +1,6 @@
 class_name Weapon extends Node2D
 
-@export_range(0.0, 10.0, 0.1) var fire_rate := 0.2
+@export_range(0.0, 10.0, 0.01) var fire_rate := 0.2
 @export_range(0, 100, 1) var ammo := 10
 @export_range(0.0, 10.0, 0.1) var reload_time := 1.5
 @export_range(0, 180, 1) var spread := -2.5
@@ -11,6 +11,7 @@ class_name Weapon extends Node2D
 
 @onready var muzzle := $"Marker2D (Muzzle)"
 @onready var pickup_area := $"Area2D (Pickup)"
+@onready var shot_stream := $"AudioStreamPlayer2D"
 
 @onready var _shoot_timer := Timer.new()
 
@@ -43,6 +44,9 @@ func shoot() -> int:
 		bullet.initialize(bullet_direction)
 		get_tree().current_scene.add_child(bullet)
 		bullet.global_position = muzzle.global_position
+	
+	shot_stream.pitch_scale = randf_range(0.75, 1.25)
+	shot_stream.play()
 	
 	if _current_ammo <= 0:
 		reload()

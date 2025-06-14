@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdf8lrfvpdl88"]
+[gd_scene load_steps=23 format=3 uid="uid://bdf8lrfvpdl88"]
 
 [ext_resource type="Script" uid="uid://07p7kkqw3lnx" path="res://scripts/director.gd" id="1_5bliq"]
 [ext_resource type="PackedScene" uid="uid://ko75b6ivteet" path="res://scenes/ui/main_menu.tscn" id="2_0mfbu"]
@@ -13,8 +13,15 @@
 [ext_resource type="PackedScene" uid="uid://csk54rbc5onda" path="res://scenes/weapon/autogun.tscn" id="10_2w7b4"]
 [ext_resource type="PackedScene" uid="uid://crq8j7te7os34" path="res://scenes/weapon/rifle.tscn" id="11_vdnif"]
 [ext_resource type="PackedScene" uid="uid://b33drci8du64q" path="res://scenes/weapon/shotgun.tscn" id="12_6sbh7"]
-[ext_resource type="Script" uid="uid://xxobklnlc7ey" path="res://scripts/environment_audio.gd" id="16_6jjd3"]
-[ext_resource type="AudioStream" uid="uid://yn56ns5mwcy1" path="res://audio/environment.mp3" id="16_uonyc"]
+[ext_resource type="PackedScene" uid="uid://c2qd662hn2ub6" path="res://scenes/weapon/coilgun.tscn" id="14_6sbh7"]
+[ext_resource type="PackedScene" uid="uid://x7ebogyk3nuj" path="res://scenes/weapon/launcher.tscn" id="16_3a53q"]
+[ext_resource type="PackedScene" uid="uid://cmddss8kmmnro" path="res://scenes/weapon/mp5.tscn" id="16_5gv6d"]
+[ext_resource type="PackedScene" uid="uid://c8d4p641c0psv" path="res://scenes/weapon/p90.tscn" id="17_snurj"]
+[ext_resource type="PackedScene" uid="uid://d1w57o3f5434k" path="res://scenes/weapon/pioner.tscn" id="18_t8485"]
+[ext_resource type="PackedScene" uid="uid://dytgkbiy6ipuk" path="res://scenes/weapon/smg.tscn" id="19_mtlon"]
+[ext_resource type="PackedScene" uid="uid://d4g5y1mxufcyy" path="res://scenes/weapon/snipe.tscn" id="20_6bpv7"]
+[ext_resource type="PackedScene" uid="uid://coiy8uy76mu4x" path="res://scenes/weapon/uzi.tscn" id="21_gg1wd"]
+[ext_resource type="PackedScene" uid="uid://dk58vsa436rir" path="res://scenes/weapon/viper.tscn" id="22_82vwx"]
 
 [node name="Matrix" type="Node2D"]
 y_sort_enabled = true
@@ -25,8 +32,9 @@ game_menu = NodePath("../GameMenu")
 settings_menu = NodePath("../SettingsMenu")
 quit_menu = NodePath("../QuitMenu")
 
-[node name="GameMenu" parent="." node_paths=PackedStringArray("pause_menu") instance=ExtResource("2_pcbbl")]
+[node name="GameMenu" parent="." node_paths=PackedStringArray("pause_menu", "director") instance=ExtResource("2_pcbbl")]
 pause_menu = NodePath("../PauseMenu")
+director = NodePath("..")
 
 [node name="PauseMenu" parent="." node_paths=PackedStringArray("game_menu", "settings_menu", "quit_menu") instance=ExtResource("3_0mfbu")]
 game_menu = NodePath("../GameMenu")
@@ -51,7 +59,8 @@ layers = {
 "obstacle": NodePath("Floor"),
 "wall": NodePath("Floor")
 }
-min_room_size_range = Vector2i(16, 16)
+min_room_size_range = Vector2i(20, 20)
+max_room_size_range = Vector2i(20, 20)
 
 [node name="Floor" type="TileMapLayer" parent="Tilemap Generator"]
 y_sort_enabled = true
@@ -63,16 +72,9 @@ spawn_scenes = Dictionary[String, PackedScene]({
 "enemy": ExtResource("9_o34t1")
 })
 spawn_equipment = Dictionary[String, Array]({
-"enemy": [ExtResource("10_2w7b4"), ExtResource("11_vdnif"), ExtResource("12_6sbh7")]
+"enemy": [ExtResource("10_2w7b4"), ExtResource("11_vdnif"), ExtResource("12_6sbh7"), ExtResource("14_6sbh7"), ExtResource("16_3a53q"), ExtResource("16_5gv6d"), ExtResource("17_snurj"), ExtResource("18_t8485"), ExtResource("19_mtlon"), ExtResource("20_6bpv7"), ExtResource("21_gg1wd"), ExtResource("22_82vwx")]
 })
 spawn_probabilities = Dictionary[String, float]({
 "enemy": 1.0
 })
 metadata/_custom_type_script = "uid://u35cx46ff4i2"
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-process_mode = 3
-stream = ExtResource("16_uonyc")
-pitch_scale = 1.25
-max_distance = 4096.0
-script = ExtResource("16_6jjd3")

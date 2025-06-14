@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://noqgtnxgtj8u"]
+
+[ext_resource type="Shader" uid="uid://s57jlne0bimo" path="res://shaders/outline_blink.tres" id="1_ofpe7"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_ofpe7")
+shader_parameter/outline_color = Color(1, 0.52, 0.52, 1)
+shader_parameter/blink_color = Color(0, 0, 0, 1)
+shader_parameter/blink_intensity = 0.0
+shader_parameter/outline_thickness = 1.0

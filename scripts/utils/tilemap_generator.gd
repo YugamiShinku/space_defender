@@ -11,6 +11,18 @@ class_name TileMapGenerator extends Node2D
 
 @export var tile_size: Vector2 = Vector2(48, 24)
 
+@export var wall_obstacle_count := Vector2i(3, 6)
+@export var min_wall_segment := 2
+@export var max_wall_segment := 6
+@export var wall_offset_range := Vector2i(4, 6)
+
+var wall_shapes = {
+	"I": [Vector2i(0,0), Vector2i(1,0), Vector2i(2,0), Vector2i(3,0)],
+	"L": [Vector2i(0,0), Vector2i(0,1), Vector2i(0,2), Vector2i(1,2)],
+	"T": [Vector2i(0,0), Vector2i(1,0), Vector2i(2,0), Vector2i(1,1), Vector2i(1,2)],
+	"Z": [Vector2i(0,0), Vector2i(1,0), Vector2i(1,1), Vector2i(2,1)]
+}
+
 var rooms: Array[Rect2i] = []
 var corridors: Array[Dictionary] = []
 
@@ -53,7 +65,8 @@ func destroy_previous_room() -> void:
 			erase_corridors_for_room(previous_room)
 			
 		var current_room = rooms.back()
-		paint_room(current_room)
+		paint_room_floor(current_room, true)
+		paint_room_walls(current_room)
 
 func erase_corridors_for_room(room: Rect2i) -> void:
 	var room_center = room.get_center()
@@ -111,6 +124,7 @@ func erase_position(pos: Vector2i) -> void:
 	var iso_pos = grid_to_isometric(pos)
 	layers["floor"].erase_cell(iso_pos)
 	layers["wall"].erase_cell(iso_pos)
+	layers["obstacle"].erase_cell(iso_pos)
 
 func erase_room(room: Rect2i) -> void:
 	var room_grow := room.grow(1)
@@ -119,14 +133,19 @@ func erase_room(room: Rect2i) -> void:
 			erase_position(Vector2i(x, y))
 
 func paint_room(room: Rect2i) -> Rect2i:
-	paint_room_floor(room)
+	paint_room_floor(room, false)
+	generate_obstacles(room)
 	return paint_room_walls(room)
 	
-func paint_room_floor(room: Rect2i) -> void:
+func paint_room_floor(room: Rect2i, repaint: bool) -> void:
 	for x in range(room.position.x, room.end.x):
 		for y in range(room.position.y, room.end.y):
 			var iso_pos = grid_to_isometric(Vector2i(x, y))
-			layers["floor"].set_cell(iso_pos, 0, tiles["floor"])
+			if repaint:
+				if layers["floor"].get_cell_source_id(iso_pos) == -1:
+					layers["floor"].set_cell(iso_pos, 0, tiles["floor"])
+			else:
+				layers["floor"].set_cell(iso_pos, 0, tiles["floor"])
 	
 func paint_room_walls(room: Rect2i) -> Rect2i:
 	var room_grow := room.grow(1)
@@ -140,6 +159,93 @@ func paint_room_walls(room: Rect2i) -> Rect2i:
 
 func grid_to_isometric(grid_pos: Vector2i) -> Vector2i:
 	return Vector2i(int(floor((grid_pos.y - grid_pos.x) / 2.0)), grid_pos.x + grid_pos.y)
+
+func generate_obstacles(room: Rect2i) -> void:
+	var group_count = randi_range(wall_obstacle_count.x, wall_obstacle_count.y)
+	
+	for _group in group_count:
+		# Выбираем случайную стену (0=верх, 1=право, 2=низ, 3=лево)
+		var wall_side = randi() % 4
+		var shape_name = wall_shapes.keys().pick_random()
+		var shape = wall_shapes[shape_name].duplicate()
+		
+		# Применяем случайный поворот/отражение к форме
+		transform_shape(shape, wall_side)
+		
+		# Выбираем базовую позицию у стены с отступом
+		var base_pos = get_wall_position(room, wall_side)
+		
+		# Размещаем форму
+		place_shape(room, base_pos, shape)
+
+func transform_shape(shape: Array, wall_side: int) -> void:
+	# Случайные трансформации формы
+	var rotations = randi() % 4  # 0-3 поворота на 90°
+	var flip_x = randf() > 0.5
+	var flip_y = randf() > 0.5
+	
+	for _r in rotations:
+		for i in shape.size():
+			shape[i] = Vector2i(-shape[i].y, shape[i].x)
+	
+	if flip_x:
+		for i in shape.size():
+			shape[i].x = -shape[i].x
+	
+	if flip_y:
+		for i in shape.size():
+			shape[i].y = -shape[i].y
+	
+	# Корректируем позицию для разных стен
+	match wall_side:
+		1: # Правая стена - поворачиваем на 90°
+			for i in shape.size():
+				shape[i] = Vector2i(shape[i].y, -shape[i].x)
+		2: # Нижняя стена - поворачиваем на 180°
+			for i in shape.size():
+				shape[i] = Vector2i(-shape[i].x, -shape[i].y)
+		3: # Левая стена - поворачиваем на 270°
+			for i in shape.size():
+				shape[i] = Vector2i(-shape[i].y, shape[i].x)
+
+func get_wall_position(room: Rect2i, wall_side: int) -> Vector2i:
+	var offset = randi_range(wall_offset_range.x, wall_offset_range.y)
+	
+	match wall_side:
+		0: # Верхняя стена
+			return Vector2i(
+				randi_range(room.position.x + 2, room.end.x - 2),
+				room.position.y + offset
+			)
+		1: # Правая стена
+			return Vector2i(
+				room.end.x - 1 - offset,
+				randi_range(room.position.y + 2, room.end.y - 2)
+			)
+		2: # Нижняя стена
+			return Vector2i(
+				randi_range(room.position.x + 2, room.end.x - 2),
+				room.end.y - 1 - offset
+			)
+		3: # Левая стена
+			return Vector2i(
+				room.position.x + offset,
+				randi_range(room.position.y + 2, room.end.y - 2)
+			)
+	
+	return room.position
+
+func place_shape(room: Rect2i, base_pos: Vector2i, shape: Array) -> void:
+	# Сначала проверяем, что вся форма помещается в комнате
+	for point in shape:
+		var pos = base_pos + point
+		if not room.has_point(pos) or pos.distance_to(room.get_center()) < 3:
+			return
+	
+	# Если все точки валидны - размещаем
+	for point in shape:
+		var pos = base_pos + point
+		place_obstacle(pos)
 
 func generate_corridors() -> void:
 	var connections = []
@@ -217,7 +323,7 @@ func create_corridor_segment(center_x: int, center_y: int, width: int) -> void:
 
 func place_floor(pos: Vector2i) -> void:
 	var iso_pos = grid_to_isometric(pos)
-	if layers["wall"].get_cell_source_id(iso_pos) != -1:
+	if layers["wall"].get_cell_source_id(iso_pos) == -1:
 		layers["wall"].erase_cell(iso_pos)
 	layers["floor"].set_cell(iso_pos, 0, tiles["floor"])
 
@@ -225,3 +331,7 @@ func place_wall(pos: Vector2i) -> void:
 	var iso_pos = grid_to_isometric(pos)
 	if layers["floor"].get_cell_source_id(iso_pos) == -1:
 		layers["wall"].set_cell(iso_pos, 0, tiles["wall"])
+
+func place_obstacle(pos: Vector2i) -> void:
+	var iso_pos = grid_to_isometric(pos)
+	layers["obstacle"].set_cell(iso_pos, 0, tiles["obstacle"])

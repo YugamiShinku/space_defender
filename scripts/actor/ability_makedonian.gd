@@ -21,8 +21,8 @@ func _ready() -> void:
 	cooldown_timer.timeout.connect(_on_cooldown)
 	add_child(cooldown_timer)
 
-func activate() -> void:
-	if is_active or !can_use or equipment._weapons.size() < 2: return
+func activate() -> bool:
+	if is_active or !can_use or equipment._weapons.size() < 2: return false
 	
 	is_active = true
 	can_use = false
@@ -31,6 +31,8 @@ func activate() -> void:
 	equipment._update_weapon_visibility()
 	
 	duration_timer.start()
+	
+	return true
 	
 func _on_ability() -> void:
 	if _current <= 0.0:

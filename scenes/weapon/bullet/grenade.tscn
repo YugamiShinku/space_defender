@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmkdyfyqkfshg"]
+
+[ext_resource type="Script" uid="uid://calltwpwt2kbn" path="res://scripts/weapon/grenade.gd" id="1_x2p08"]
+[ext_resource type="Texture2D" uid="uid://bm8bwrhwen2wq" path="res://assets/weapon/bullet/grenade.png" id="2_x2p08"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4hxwj"]
+size = Vector2(5, 3)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1wgcd"]
+radius = 25.0
+
+[node name="Sprite2D (Grenade)" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_x2p08")
+damage = 25
+speed_range = Vector2(450, 600)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_x2p08")
+
+[node name="Area2D (Collider)" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 5
+
+[node name="CollisionShape2D (Collider)" type="CollisionShape2D" parent="Area2D (Collider)"]
+y_sort_enabled = true
+shape = SubResource("RectangleShape2D_4hxwj")
+
+[node name="Area2D (Explosion)" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D (Explosion)"]
+shape = SubResource("CircleShape2D_1wgcd")
+
+[connection signal="area_entered" from="Area2D (Collider)" to="." method="_on_area_2d_collider_area_entered"]
+[connection signal="body_entered" from="Area2D (Collider)" to="." method="_on_area_2d_collider_body_entered"]
